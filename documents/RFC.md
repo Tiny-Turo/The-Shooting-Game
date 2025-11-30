@@ -20,13 +20,9 @@ The player class will have two main parts - one focused on the position, velocit
 
 ### Gun Class
 
-Since each gun may vary, the gun class will be made up of many parts. Each part will change the guns stats, such as `fireSpeed`, `recoil`,and `mobility`. Each gun will also have a type of bullet it uses.
-
-<!-- recoil, accuracy, reload speed, mag size-->
+Since each gun may vary, the gun class will be made up of many parts. Each part will change the guns stats, such as `fireRate`, `recoil`,and `mobility`. Each gun will also have a type of bullet it uses.
 
 The gun also must be split in a set amount of parts, such as `barrel`, `receiver` and `magazine` so that it is easy to make parts and everything is modulable
-
-<!-- grip, optics, stock -->
 
 ### Bullet Class
 
