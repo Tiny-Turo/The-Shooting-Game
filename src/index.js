@@ -8,12 +8,13 @@ const scenes = {
   game: Game,
 };
 
-let currentScene = "game";
-
 window.changeScene = function (sceneName) {
   currentScene = sceneName;
   scenes[currentScene].load();
 };
+
+let currentScene;
+changeScene("game");
 
 let lastTime;
 window.time = {

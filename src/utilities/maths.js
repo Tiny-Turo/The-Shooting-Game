@@ -13,3 +13,7 @@ window.magnitude = function (a) {
 window.lerp = function (a, b, t) {
   return a * (1 - t) + b * t;
 };
+
+window.angleTo = function (a, b) {
+  return Math.atan2(b.y - a.y, b.x - a.x) + Math.PI / 2;
+};

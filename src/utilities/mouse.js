@@ -1,10 +1,10 @@
 window.mouse = { x: 0, y: 0 };
-addEventListener("mousemove", (e) => {
+
+window.addEventListener("mousemove", (e) => {
   const rect = canvas.getBoundingClientRect();
 
-  const scaleX = canvas.width / rect.width;
-  const scaleY = canvas.height / rect.height;
+  const scale = canvas.width / rect.width;
 
-  mouse.x = (e.clientX - rect.left) * scaleX;
-  mouse.y = (e.clientY - rect.top) * scaleY;
+  mouse.x = (e.clientX - rect.left) * scale;
+  mouse.y = (e.clientY - rect.top) * scale;
 });
