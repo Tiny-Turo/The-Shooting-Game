@@ -1,7 +1,7 @@
 import "./utilities/utilities.js";
 
-import * as Game from "./game/main.js";
-import * as Menu from "./menu/main.js";
+import * as Game from "./game/index.js";
+import * as Menu from "./menu/index.js";
 
 const scenes = {
   menu: Menu,
