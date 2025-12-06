@@ -23,7 +23,8 @@ Each gun will have these stats:
 - **fire rate**
 - **mobility** (how quickly player can move)
 - **accuracy** (how much spread there will be when player shoots)
-- **reload speed**
+- **reload time**
+- **recoil**
 - **mag capacity** & **bullets shot at once**
 
 # Art and Audio

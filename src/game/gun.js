@@ -1,10 +1,14 @@
 class Gun {
   constructor() {
-    this.fireRate = 0;
     this.mobility = 0.4;
+    this.recoil = 0;
+
+    //If fireRate = 0, gun will not continue shooting when held down, useful for pistols
+    this.fireRate = 0.1;
     this.accuracy = 0;
-    this.reloadSpeed = 0;
-    this.magCapacity = 0;
+
+    this.reloadTime = 0.3;
+    this.magCapacity = 20;
     this.bulletsAtOnce = 0;
   }
 }

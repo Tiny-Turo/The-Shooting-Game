@@ -1,4 +1,5 @@
 # Codebase Rules
 
 - I will keep all angles in radians
-- Gun stats will be kept from 0 - 1
+- Gun only stores data - all the variables will be constant when in game (eg. `isReloading` will be in `Player` class)
+- All stuff to do with time will be in seconds

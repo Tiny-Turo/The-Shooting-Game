@@ -26,7 +26,7 @@ function update(currentTime) {
   // Calculate delta time
   time.deltaTime = (currentTime - lastTime) / 1000;
   lastTime = currentTime;
-  time.time = currentTime;
+  time.time = currentTime / 1000;
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   scenes[currentScene].update();

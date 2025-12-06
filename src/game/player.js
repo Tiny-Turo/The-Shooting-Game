@@ -1,5 +1,6 @@
 const playerConfig = {
-  speed: 6400, // Acceleration
+  maxSpeed: 4000, // Acceleration
+  maxRecoil: 2000,
   friction: 10,
 
   radius: 50,
@@ -7,12 +8,25 @@ const playerConfig = {
 
 class Player {
   constructor(x, y) {
+    //Position stuff
     this.x = x;
     this.y = y;
     this.velocity = { x: 0, y: 0 };
     this.angle = 0;
 
+    //Gun stuff
     this.gun = {};
+    this.isReloading = false;
+    this.bulletsLeft = 0;
+    this.lastShot = 0;
+
+    addEventListener("mousedown", (e) => {
+      this.shoot();
+    });
+
+    addEventListener("keydown", (e) => {
+      if (e.code == "KeyR") this.reload();
+    });
   }
 
   draw() {
@@ -31,9 +45,43 @@ class Player {
 
   giveGun(gun) {
     this.gun = gun;
+    this.bulletsLeft = this.gun.magCapacity;
+  }
+
+  shoot() {
+    //Will not shoot if has no bullets or is reloading
+    //Or if player is trying to spam click faster than a machine gun
+    if (this.bulletsLeft <= 0 || this.isReloading || (time.time - this.lastShot < this.gun.fireRate && this.gun.fireRate > 0)) return;
+    this.bulletsLeft--;
+    console.log("hi");
+    sfx.gunshot.play();
+    this.lastShot = time.time;
+    //If bullets are finished - reload automatically
+    if (this.bulletsLeft <= 0) {
+      this.reload();
+    }
+  }
+
+  reload() {
+    //Will not reload if is already reloading or mag is full
+    if (this.isReloading || this.bulletsLeft == this.gun.magCapacity) return;
+    this.isReloading = true;
+
+    setTimeout(() => {
+      this.bulletsLeft = this.gun.magCapacity;
+      this.isReloading = false;
+    }, this.gun.reloadTime * 1000);
   }
 
   update() {
+    if (this.isReloading) console.log("Wow!");
+    //Check if player shoots
+    if (mouse.isDown) {
+      if (time.time - this.lastShot > this.gun.fireRate && this.gun.fireRate > 0) {
+        this.shoot();
+      }
+    }
+
     let dir = { x: 0, y: 0 };
     if (keysDown["KeyW"]) dir.y--;
     if (keysDown["KeyS"]) dir.y++;
@@ -43,8 +91,10 @@ class Player {
     dir = normalize(dir);
 
     // Acceleration is multiplied by gun mobility
-    this.velocity.x += dir.x * playerConfig.speed * this.gun.mobility * time.deltaTime;
-    this.velocity.y += dir.y * playerConfig.speed * this.gun.mobility * time.deltaTime;
+    let acceleration = playerConfig.maxSpeed * this.gun.mobility;
+
+    this.velocity.x += dir.x * acceleration * time.deltaTime;
+    this.velocity.y += dir.y * acceleration * time.deltaTime;
 
     //Friction
     const frictionBlend = Math.pow(0.5, time.deltaTime * playerConfig.friction);
