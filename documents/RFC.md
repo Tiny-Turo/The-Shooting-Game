@@ -85,3 +85,11 @@ class Button {
 
 homeButton = new Button(position, backToMenu)
 ```
+
+# Promblem #4
+
+How will I handle all the images, for bullets and guns?
+
+# Solution
+
+All of the images can be on one big sprite sheet - one for the guns and one for bullets. I can give each bullet class a cell X which decides which image on the sprite sheet to draw, and give each gun part a cell X for which image to draw. The gun parts will have two views, the in-menu view and the top down one seen in-game. They can both use the same cell X

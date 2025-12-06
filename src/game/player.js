@@ -4,7 +4,10 @@ const playerConfig = {
   friction: 10,
 
   radius: 50,
+
+  image: new Image(),
 };
+playerConfig.image.src = "/temp/player.png";
 
 class Player {
   constructor(x, y) {
@@ -19,6 +22,8 @@ class Player {
     this.isReloading = false;
     this.bulletsLeft = 0;
     this.lastShot = 0;
+
+    this.bullets = [];
 
     addEventListener("mousedown", (e) => {
       this.shoot();
@@ -35,10 +40,13 @@ class Player {
     ctx.rotate(this.angle);
 
     ctx.fillStyle = "#ED6A5A";
-    ctx.beginPath();
-    ctx.arc(0, 0, playerConfig.radius, 0, 2 * Math.PI);
-    ctx.rect(-playerConfig.radius / 4, -playerConfig.radius * 2, playerConfig.radius / 2, playerConfig.radius * 2);
-    ctx.fill();
+    // ctx.beginPath();
+    // ctx.arc(0, 0, playerConfig.radius, 0, 2 * Math.PI);
+    // ctx.rect(-playerConfig.radius / 4, -playerConfig.radius * 2, playerConfig.radius / 2, playerConfig.radius * 2);
+
+    // ctx.fill();
+
+    ctx.drawImage(playerConfig.image, -SPRITE_SIZE / 2, -SPRITE_SIZE / 2, SPRITE_SIZE, SPRITE_SIZE);
 
     ctx.restore();
   }
@@ -53,9 +61,13 @@ class Player {
     //Or if player is trying to spam click faster than a machine gun
     if (this.bulletsLeft <= 0 || this.isReloading || (time.time - this.lastShot < this.gun.fireRate && this.gun.fireRate > 0)) return;
     this.bulletsLeft--;
-    console.log("hi");
-    sfx.gunshot.play();
+
+    this.gun.shootNoise.play();
     this.lastShot = time.time;
+
+    const bulletDirection = normalize({ x: mouse.x - this.x, y: mouse.y - this.y });
+    this.bullets.push(new this.gun.BulletClass(this.x, this.y, bulletDirection.x, bulletDirection.y));
+
     //If bullets are finished - reload automatically
     if (this.bulletsLeft <= 0) {
       this.reload();
@@ -80,6 +92,11 @@ class Player {
       if (time.time - this.lastShot > this.gun.fireRate && this.gun.fireRate > 0) {
         this.shoot();
       }
+    }
+
+    //Update the players bullets
+    for (const bullet of this.bullets) {
+      bullet.update();
     }
 
     let dir = { x: 0, y: 0 };
