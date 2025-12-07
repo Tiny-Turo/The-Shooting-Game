@@ -1,8 +1,12 @@
 import { barrel, magazine, grip, body } from "./gunparts";
 import { pushBullets } from "./bullet";
 
-let gunPartSheet = new Image();
-gunPartSheet.src = "/temp/barrel.png";
+let barrelSheet = new Image();
+barrelSheet.src = "/temp/barrel.png";
+
+let magSheet = new Image();
+magSheet.src = "/temp/magazine.png";
+
 const tempReload = new Howl({ src: ["/temp/reload.mp3"], loop: false, volume: 1 });
 
 class Gun {
@@ -60,8 +64,8 @@ class Gun {
     let newBullets = [];
     for (let i = 0; i < this.bulletsAtOnce; i++) {
       let bulletAngle = angle - (this.bulletsAtOnce * this.multipleBulletSpread) / 2 + (i + 0.5) * this.multipleBulletSpread;
-      // 0.5 is the max and min accuracy angle
-      bulletAngle += (Math.random() - 0.5) * 0.5 * (1 - this.accuracy);
+      // 0.25 is the max and min accuracy angle
+      bulletAngle += (Math.random() - 0.5) * 0.25 * (1 - this.accuracy);
 
       const bulletDirection = angleToVector(bulletAngle);
       const newBullet = new this.BulletClass(x, y, bulletDirection.x, bulletDirection.y);
@@ -70,7 +74,7 @@ class Gun {
 
     pushBullets(newBullets);
 
-    this.bulletsLeft -= this.bulletsAtOnce;
+    this.bulletsLeft -= 1; //Even if it shoots multiple bullets at once, count it as one
 
     if (this.bulletsLeft <= 0) {
       this.reload();
@@ -90,8 +94,23 @@ class Gun {
   }
 
   draw() {
+    //Mag
+    if (this.barrel.showMag)
+      ctx.drawImage(
+        magSheet,
+        this.magazine.imgCellX * SPRITE_SIZE,
+        0,
+        SPRITE_SIZE,
+        SPRITE_SIZE * 2,
+        -SPRITE_SIZE / 2,
+        -SPRITE_SIZE * 2.4,
+        SPRITE_SIZE,
+        SPRITE_SIZE * 2
+      );
+
+    //Barrel
     ctx.drawImage(
-      gunPartSheet,
+      barrelSheet,
       this.barrel.imgCellX * SPRITE_SIZE,
       0,
       SPRITE_SIZE,
