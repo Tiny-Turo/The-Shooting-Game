@@ -1,10 +1,17 @@
 import { barrel, magazine, grip, body } from "./gunparts";
+import { pushBullets } from "./bullet";
 
 let gunPartSheet = new Image();
 gunPartSheet.src = "/temp/barrel.png";
+const tempReload = new Howl({ src: ["/temp/reload.mp3"], loop: false, volume: 1 });
 
 class Gun {
   constructor() {
+    this.bulletsLeft = 0;
+    this.isReloading = false;
+    this.lastShot = 0;
+
+    //DATA
     this.mobility;
     this.recoil;
 
@@ -17,12 +24,14 @@ class Gun {
     this.bulletsAtOnce;
     this.multipleBulletSpread;
 
-    this.shootNoise = new Howl({ src: ["/temp/low-pop-368761.mp3"], loop: false, volume: 1 });
+    this.shootNoise = new Howl({ src: ["/temp/submachine-gun-79846.mp3"], loop: false, volume: 1 });
 
     this.calculateStats(barrel, magazine, grip, body);
   }
 
   calculateStats(barrel, magazine, grip, body) {
+    this.bulletsLeft = magazine.capacity;
+
     this.barrel = barrel;
     this.magazine = magazine;
     this.grip = grip;
@@ -43,20 +52,41 @@ class Gun {
   }
 
   shoot(x, y, angle) {
-    let bullets = [];
+    if (this.bulletsLeft <= 0 || this.isReloading || (time.time - this.lastShot < this.fireRate && this.fireRate > 0)) return;
+
+    this.shootNoise.play();
+    this.lastShot = time.time;
+
+    let newBullets = [];
     for (let i = 0; i < this.bulletsAtOnce; i++) {
       let bulletAngle = angle - (this.bulletsAtOnce * this.multipleBulletSpread) / 2 + (i + 0.5) * this.multipleBulletSpread;
       // 0.5 is the max and min accuracy angle
       bulletAngle += (Math.random() - 0.5) * 0.5 * (1 - this.accuracy);
 
       const bulletDirection = angleToVector(bulletAngle);
-
       const newBullet = new this.BulletClass(x, y, bulletDirection.x, bulletDirection.y);
-
-      bullets.push(newBullet);
+      newBullets.push(newBullet);
     }
 
-    return bullets;
+    pushBullets(newBullets);
+
+    this.bulletsLeft -= this.bulletsAtOnce;
+
+    if (this.bulletsLeft <= 0) {
+      this.reload();
+    }
+  }
+
+  reload() {
+    //Will not reload if is already reloading or mag is full
+    if (this.isReloading || this.bulletsLeft == this.magCapacity) return;
+    this.isReloading = true;
+    tempReload.play();
+
+    setTimeout(() => {
+      this.bulletsLeft = this.magCapacity;
+      this.isReloading = false;
+    }, this.reloadTime * 1000);
   }
 
   draw() {
@@ -65,11 +95,11 @@ class Gun {
       this.barrel.imgCellX * SPRITE_SIZE,
       0,
       SPRITE_SIZE,
-      SPRITE_SIZE,
+      SPRITE_SIZE * 2,
       -SPRITE_SIZE / 2,
-      -SPRITE_SIZE * 1.4,
+      -SPRITE_SIZE * 2.4,
       SPRITE_SIZE,
-      SPRITE_SIZE
+      SPRITE_SIZE * 2
     );
   }
 }

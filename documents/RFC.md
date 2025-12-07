@@ -32,7 +32,7 @@ Each gun part will be in a class named after the gun part - this class will have
 
 For the bullet class there will be the most variation, some bullets may explode, some may bounce everywhere. Each bullet type will have their own class, unless bullets are simmilar and can be built off eachother. They will have a function that will run when they are shot, and one which will run each frame.
 
-Then the client will check collisions for their own bullets, and pass the position of the bullets to the server, aswell as bullet type.
+The info of from where the bullet shot and which direction, then each client will update each bullet and check each collision.
 
 # Problem #2
 

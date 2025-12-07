@@ -8,6 +8,7 @@ const playerConfig = {
   image: new Image(),
   gun: new Image(),
 };
+
 playerConfig.image.src = "/temp/player.png";
 playerConfig.gun.src = "/temp/barrel.png";
 
@@ -20,19 +21,14 @@ class Player {
     this.angle = 0;
 
     //Gun stuff
-    this.gun = {};
-    this.isReloading = false;
-    this.bulletsLeft = 0;
-    this.lastShot = 0;
-
-    this.bullets = [];
+    this.gun;
 
     addEventListener("mousedown", (e) => {
-      this.shoot();
+      this.gun.shoot(this.x, this.y, this.angle);
     });
 
     addEventListener("keydown", (e) => {
-      if (e.code == "KeyR") this.reload();
+      if (e.code == "KeyR") this.gun.reload();
     });
   }
 
@@ -51,55 +47,14 @@ class Player {
 
   giveGun(gun) {
     this.gun = gun;
-    this.bulletsLeft = this.gun.magCapacity;
-  }
-
-  shoot() {
-    //Will not shoot if has no bullets or is reloading
-    //Or if player is trying to spam click faster than a machine gun
-    if (this.bulletsLeft <= 0 || this.isReloading || (time.time - this.lastShot < this.gun.fireRate && this.gun.fireRate > 0)) return;
-
-    this.gun.shootNoise.play();
-    this.lastShot = time.time;
-
-    //Push the new bullets made from shooting
-    const bulletsSpawned = this.gun.shoot(this.x, this.y, this.angle);
-    this.bullets = this.bullets.concat(bulletsSpawned);
-    this.bulletsLeft -= bulletsSpawned.length;
-
-    //If bullets are finished - reload automatically
-    if (this.bulletsLeft <= 0) {
-      this.reload();
-    }
-  }
-
-  reload() {
-    //Will not reload if is already reloading or mag is full
-    if (this.isReloading || this.bulletsLeft == this.gun.magCapacity) return;
-    this.isReloading = true;
-
-    setTimeout(() => {
-      this.bulletsLeft = this.gun.magCapacity;
-      this.isReloading = false;
-    }, this.gun.reloadTime * 1000);
   }
 
   update() {
-    if (this.isReloading) console.log("Wow!");
     //Check if player shoots
     if (mouse.isDown) {
-      if (time.time - this.lastShot > this.gun.fireRate && this.gun.fireRate > 0) {
-        this.shoot();
+      if (time.time - this.gun.lastShot > this.gun.fireRate && this.gun.fireRate > 0) {
+        this.gun.shoot(this.x, this.y, this.angle);
       }
-    }
-
-    this.bullets = this.bullets.filter((bullet) => !bullet.destroy);
-    console.log(this.bullets);
-
-    //Update the players bullets
-    for (const bullet of this.bullets) {
-      bullet.update();
-      bullet.draw();
     }
 
     let dir = { x: 0, y: 0 };
