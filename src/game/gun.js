@@ -1,5 +1,8 @@
 import { barrel, magazine, grip, body } from "./gunparts";
 
+let gunPartSheet = new Image();
+gunPartSheet.src = "/temp/barrel.png";
+
 class Gun {
   constructor() {
     this.mobility;
@@ -42,8 +45,9 @@ class Gun {
   shoot(x, y, angle) {
     let bullets = [];
     for (let i = 0; i < this.bulletsAtOnce; i++) {
-      const bulletAngle = angle - (this.bulletsAtOnce * this.multipleBulletSpread) / 2 + (i + 0.5) * this.multipleBulletSpread;
-      // const bulletAngle = angle;
+      let bulletAngle = angle - (this.bulletsAtOnce * this.multipleBulletSpread) / 2 + (i + 0.5) * this.multipleBulletSpread;
+      // 0.5 is the max and min accuracy angle
+      bulletAngle += (Math.random() - 0.5) * 0.5 * (1 - this.accuracy);
 
       const bulletDirection = angleToVector(bulletAngle);
 
@@ -53,6 +57,20 @@ class Gun {
     }
 
     return bullets;
+  }
+
+  draw() {
+    ctx.drawImage(
+      gunPartSheet,
+      this.barrel.imgCellX * SPRITE_SIZE,
+      0,
+      SPRITE_SIZE,
+      SPRITE_SIZE,
+      -SPRITE_SIZE / 2,
+      -SPRITE_SIZE * 1.4,
+      SPRITE_SIZE,
+      SPRITE_SIZE
+    );
   }
 }
 

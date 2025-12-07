@@ -6,8 +6,10 @@ const playerConfig = {
   radius: 50,
 
   image: new Image(),
+  gun: new Image(),
 };
 playerConfig.image.src = "/temp/player.png";
+playerConfig.gun.src = "/temp/barrel.png";
 
 class Player {
   constructor(x, y) {
@@ -40,12 +42,8 @@ class Player {
     ctx.rotate(this.angle);
 
     ctx.fillStyle = "#ED6A5A";
-    // ctx.beginPath();
-    // ctx.arc(0, 0, playerConfig.radius, 0, 2 * Math.PI);
-    // ctx.rect(-playerConfig.radius / 4, -playerConfig.radius * 2, playerConfig.radius / 2, playerConfig.radius * 2);
 
-    // ctx.fill();
-
+    this.gun.draw();
     ctx.drawImage(playerConfig.image, -SPRITE_SIZE / 2, -SPRITE_SIZE / 2, SPRITE_SIZE, SPRITE_SIZE);
 
     ctx.restore();
@@ -95,9 +93,13 @@ class Player {
       }
     }
 
+    this.bullets = this.bullets.filter((bullet) => !bullet.destroy);
+    console.log(this.bullets);
+
     //Update the players bullets
     for (const bullet of this.bullets) {
       bullet.update();
+      bullet.draw();
     }
 
     let dir = { x: 0, y: 0 };

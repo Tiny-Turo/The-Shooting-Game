@@ -1,10 +1,12 @@
-import { RubberBullet } from "./bullet";
+import { RubberBullet, ShotgunShell, Bullet } from "./bullet";
 
 class Barrel {
   constructor(mobility, bulletsAtOnce, multipleBulletSpread) {
     this.mobility = mobility;
     this.bulletsAtOnce = bulletsAtOnce; //Int
     this.multipleBulletSpread = multipleBulletSpread; //Angle in radians
+
+    this.imgCellX = 0;
   }
 }
 
@@ -31,7 +33,7 @@ class Body {
   }
 }
 
-export const barrel = new Barrel(1, 6, 0.1);
-export const magazine = new Magazine(false, 1, 6, RubberBullet);
-export const grip = new Grip(1, 1);
-export const body = new Body(1, 0.1);
+export const barrel = new Barrel(1, 1, 0);
+export const magazine = new Magazine(true, 1, 20, RubberBullet);
+export const grip = new Grip(1, 0);
+export const body = new Body(1, 0.2);
