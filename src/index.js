@@ -9,8 +9,9 @@ const scenes = {
 };
 
 window.changeScene = function (sceneName) {
+  scenes[currentScene]?.unload();
   currentScene = sceneName;
-  scenes[currentScene].load();
+  scenes[currentScene]?.load();
 };
 
 let currentScene;
@@ -29,7 +30,7 @@ function update(currentTime) {
   time.time = currentTime / 1000;
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  scenes[currentScene].update();
+  scenes[currentScene]?.update();
 
   requestAnimationFrame(update);
 }

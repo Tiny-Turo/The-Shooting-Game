@@ -23,13 +23,17 @@ class Player {
     //Gun stuff
     this.gun;
 
-    addEventListener("mousedown", (e) => {
+    this.onMouseDown = (e) => {
       this.gun.shoot(this.x, this.y, this.angle);
-    });
+    };
 
-    addEventListener("keydown", (e) => {
+    this.onKeyDown = (e) => {
       if (e.code == "KeyR") this.gun.reload();
-    });
+      if (e.code == "Escape") changeScene("menu");
+    };
+
+    addEventListener("mousedown", this.onMouseDown);
+    addEventListener("keydown", this.onKeyDown);
   }
 
   draw() {
@@ -84,6 +88,15 @@ class Player {
 
     this.draw();
   }
+
+  destroy() {
+    removeEventListener("mousedown", this.onMouseDown);
+    removeEventListener("keydown", this.onKeyDown);
+  }
 }
 
-export let userPlayer = new Player(canvas.width / 2, canvas.height / 2);
+export let userPlayer;
+
+export function loadPlayer() {
+  userPlayer = new Player(canvas.width / 2, canvas.height / 2);
+}

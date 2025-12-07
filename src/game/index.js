@@ -1,4 +1,4 @@
-import { userPlayer } from "./player";
+import { loadPlayer, userPlayer } from "./player";
 import { gun } from "../gun"; // Will change :)
 import { updateBullets } from "../bullet";
 
@@ -11,5 +11,10 @@ export function update() {
 }
 
 export function load() {
+  loadPlayer();
   userPlayer.giveGun(gun);
+}
+
+export function unload() {
+  userPlayer.destroy();
 }

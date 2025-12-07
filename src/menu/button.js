@@ -2,32 +2,47 @@ export let buttons = [];
 
 export function updateButtons() {
   for (const button of buttons) {
-    bullet.update();
-    bullet.draw();
+    button.update();
+    button.draw();
   }
 }
 
-const DEFAULT_SIZE = {
-  x: 200,
-  y: 100,
-};
+addEventListener("mousedown", (e) => {
+  for (const button of buttons) {
+    if (button.isMouseOn()) button.press();
+  }
+});
 
-class Button {
-  constructor(position, trigger, size = DEFAULT_SIZE) {
-    this.position = position;
+const DEFAULT_WIDTH = 300;
+const DEFAULT_HEIGHT = 100;
+
+export class Button {
+  constructor(X, Y, trigger, WIDTH = DEFAULT_WIDTH, HEIGHT = DEFAULT_HEIGHT) {
+    this.X = X;
+    this.Y = Y;
+    this.WIDTH = WIDTH;
+    this.HEIGHT = HEIGHT;
+
     this.trigger = trigger;
-    this.size = size;
 
     buttons.push(this);
   }
 
   update() {}
 
-  draw() {
-    ctx.fillRect(this.position.x, this.position.y, this.size.x, this.size.y);
+  isMouseOn() {
+    return mouse.x > this.X && mouse.x < this.X + this.WIDTH && mouse.y > this.Y && mouse.y < this.Y + this.HEIGHT;
   }
 
-  onPress() {
+  draw() {
+    ctx.fillStyle = "#769B46";
+
+    if (this.isMouseOn()) ctx.fillStyle = "red";
+
+    ctx.fillRect(this.X, this.Y, this.WIDTH, this.HEIGHT);
+  }
+
+  press() {
     this.trigger();
   }
 }

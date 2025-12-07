@@ -1,4 +1,3 @@
-import { barrel, magazine, grip, body } from "./gunparts";
 import { pushBullets } from "./bullet";
 
 let barrelSheet = new Image();
@@ -7,30 +6,19 @@ barrelSheet.src = "/temp/barrel.png";
 let magSheet = new Image();
 magSheet.src = "/temp/magazine.png";
 
+let bodySheet = new Image();
+bodySheet.src = "/temp/body.png";
+
 const tempReload = new Howl({ src: ["/temp/reload.mp3"], loop: false, volume: 1 });
 
-class Gun {
-  constructor() {
-    this.bulletsLeft = 0;
+export class Gun {
+  constructor(barrel, magazine, grip, body) {
+    this.calculateStats(barrel, magazine, grip, body);
+
     this.isReloading = false;
     this.lastShot = 0;
 
-    //DATA
-    this.MOBILITY;
-    this.recoil;
-
-    //If FIRE_RATE = 0, gun will not continue shooting when held down, useful for pistols
-    this.FIRE_RATE;
-    this.ACCURACY;
-
-    this.RELOAD_TIME;
-    this.MAG_CAPACITY;
-    this.BULLETS_AT_ONCE;
-    this.MULTIPLE_BULLET_SPREAD;
-
     this.SHOOT_NOISE = new Howl({ src: ["/temp/submachine-gun-79846.mp3"], loop: false, volume: 1 });
-
-    this.calculateStats(barrel, magazine, grip, body);
   }
 
   calculateStats(barrel, magazine, grip, body) {
@@ -42,7 +30,6 @@ class Gun {
     this.body = body;
 
     this.MOBILITY = (grip.MOBILITY + body.MOBILITY + barrel.MOBILITY) / 3;
-    this.recoil = null;
 
     this.FIRE_RATE = magazine.IS_AUTOMATIC ? body.FIRE_RATE : 0;
     this.ACCURACY = grip.ACCURACY;
@@ -103,7 +90,7 @@ class Gun {
         SPRITE_SIZE,
         SPRITE_SIZE * 2,
         -SPRITE_SIZE / 2,
-        -SPRITE_SIZE * 2.4,
+        -SPRITE_SIZE * 2.45,
         SPRITE_SIZE,
         SPRITE_SIZE * 2
       );
@@ -116,12 +103,15 @@ class Gun {
       SPRITE_SIZE,
       SPRITE_SIZE * 2,
       -SPRITE_SIZE / 2,
-      -SPRITE_SIZE * 2.4,
+      -SPRITE_SIZE * 2.45,
       SPRITE_SIZE,
       SPRITE_SIZE * 2
     );
   }
 }
 
-//Right now stats are hard coded, later they will be calculated based on the parts used to make them
-export const gun = new Gun();
+export let gun;
+
+export function setGun(barrel, magazine, grip, body) {
+  gun = new Gun(barrel, magazine, grip, body);
+}
