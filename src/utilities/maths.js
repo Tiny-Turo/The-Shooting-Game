@@ -17,3 +17,7 @@ window.lerp = function (a, b, t) {
 window.angleTo = function (a, b) {
   return Math.atan2(b.y - a.y, b.x - a.x) + Math.PI / 2;
 };
+
+window.angleToVector = function (a) {
+  return { x: Math.sin(a), y: -Math.cos(a) };
+};

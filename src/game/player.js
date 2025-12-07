@@ -60,13 +60,14 @@ class Player {
     //Will not shoot if has no bullets or is reloading
     //Or if player is trying to spam click faster than a machine gun
     if (this.bulletsLeft <= 0 || this.isReloading || (time.time - this.lastShot < this.gun.fireRate && this.gun.fireRate > 0)) return;
-    this.bulletsLeft--;
 
     this.gun.shootNoise.play();
     this.lastShot = time.time;
 
-    const bulletDirection = normalize({ x: mouse.x - this.x, y: mouse.y - this.y });
-    this.bullets.push(new this.gun.BulletClass(this.x, this.y, bulletDirection.x, bulletDirection.y));
+    //Push the new bullets made from shooting
+    const bulletsSpawned = this.gun.shoot(this.x, this.y, this.angle);
+    this.bullets = this.bullets.concat(bulletsSpawned);
+    this.bulletsLeft -= bulletsSpawned.length;
 
     //If bullets are finished - reload automatically
     if (this.bulletsLeft <= 0) {

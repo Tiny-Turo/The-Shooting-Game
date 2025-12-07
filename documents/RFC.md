@@ -24,9 +24,13 @@ Since each gun may vary, the gun class will be made up of many parts. Each part 
 
 The gun also must be split in a set amount of parts, such as `barrel`, `receiver` and `magazine` so that it is easy to make parts and everything is modulable
 
+### Gun Parts
+
+Each gun part will be in a class named after the gun part - this class will have stats which are given to the `calculateStats()` function of the gun, they will also have an image.
+
 ### Bullet Class
 
-For the bullet class there will be the most variation, some bullets may explode, some may bounce everywhere. For this reason, there will be a base bullet class (which just moves in a certain direction) and then bullets will be built from there. They will have a function that will run when they are shot, and one which will run each frame.
+For the bullet class there will be the most variation, some bullets may explode, some may bounce everywhere. Each bullet type will have their own class, unless bullets are simmilar and can be built off eachother. They will have a function that will run when they are shot, and one which will run each frame.
 
 Then the client will check collisions for their own bullets, and pass the position of the bullets to the server, aswell as bullet type.
 
