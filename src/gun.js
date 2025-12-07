@@ -16,56 +16,56 @@ class Gun {
     this.lastShot = 0;
 
     //DATA
-    this.mobility;
+    this.MOBILITY;
     this.recoil;
 
-    //If fireRate = 0, gun will not continue shooting when held down, useful for pistols
-    this.fireRate;
-    this.accuracy;
+    //If FIRE_RATE = 0, gun will not continue shooting when held down, useful for pistols
+    this.FIRE_RATE;
+    this.ACCURACY;
 
-    this.reloadTime;
-    this.magCapacity;
-    this.bulletsAtOnce;
-    this.multipleBulletSpread;
+    this.RELOAD_TIME;
+    this.MAG_CAPACITY;
+    this.BULLETS_AT_ONCE;
+    this.MULTIPLE_BULLET_SPREAD;
 
-    this.shootNoise = new Howl({ src: ["/temp/submachine-gun-79846.mp3"], loop: false, volume: 1 });
+    this.SHOOT_NOISE = new Howl({ src: ["/temp/submachine-gun-79846.mp3"], loop: false, volume: 1 });
 
     this.calculateStats(barrel, magazine, grip, body);
   }
 
   calculateStats(barrel, magazine, grip, body) {
-    this.bulletsLeft = magazine.capacity;
+    this.bulletsLeft = magazine.CAPACITY;
 
     this.barrel = barrel;
     this.magazine = magazine;
     this.grip = grip;
     this.body = body;
 
-    this.mobility = (grip.mobility + body.mobility + barrel.mobility) / 3;
+    this.MOBILITY = (grip.MOBILITY + body.MOBILITY + barrel.MOBILITY) / 3;
     this.recoil = null;
 
-    this.fireRate = magazine.isAutomatic ? body.fireRate : 0;
-    this.accuracy = grip.accuracy;
+    this.FIRE_RATE = magazine.IS_AUTOMATIC ? body.FIRE_RATE : 0;
+    this.ACCURACY = grip.ACCURACY;
 
-    this.reloadTime = magazine.reloadTime;
-    this.magCapacity = magazine.capacity;
-    this.bulletsAtOnce = barrel.bulletsAtOnce;
-    this.multipleBulletSpread = barrel.multipleBulletSpread;
+    this.RELOAD_TIME = magazine.RELOAD_TIME;
+    this.MAG_CAPACITY = magazine.CAPACITY;
+    this.BULLETS_AT_ONCE = barrel.BULLETS_AT_ONCE;
+    this.MULTIPLE_BULLET_SPREAD = barrel.MULTIPLE_BULLET_SPREAD;
 
     this.BulletClass = magazine.BulletClass;
   }
 
   shoot(x, y, angle) {
-    if (this.bulletsLeft <= 0 || this.isReloading || (time.time - this.lastShot < this.fireRate && this.fireRate > 0)) return;
+    if (this.bulletsLeft <= 0 || this.isReloading || (time.time - this.lastShot < this.FIRE_RATE && this.FIRE_RATE > 0)) return;
 
-    this.shootNoise.play();
+    this.SHOOT_NOISE.play();
     this.lastShot = time.time;
 
     let newBullets = [];
-    for (let i = 0; i < this.bulletsAtOnce; i++) {
-      let bulletAngle = angle - (this.bulletsAtOnce * this.multipleBulletSpread) / 2 + (i + 0.5) * this.multipleBulletSpread;
-      // 0.25 is the max and min accuracy angle
-      bulletAngle += (Math.random() - 0.5) * 0.25 * (1 - this.accuracy);
+    for (let i = 0; i < this.BULLETS_AT_ONCE; i++) {
+      let bulletAngle = angle - (this.BULLETS_AT_ONCE * this.MULTIPLE_BULLET_SPREAD) / 2 + (i + 0.5) * this.MULTIPLE_BULLET_SPREAD;
+      // 0.25 is the max and min ACCURACY angle
+      bulletAngle += (Math.random() - 0.5) * 0.25 * (1 - this.ACCURACY);
 
       const bulletDirection = angleToVector(bulletAngle);
       const newBullet = new this.BulletClass(x, y, bulletDirection.x, bulletDirection.y);
@@ -83,14 +83,14 @@ class Gun {
 
   reload() {
     //Will not reload if is already reloading or mag is full
-    if (this.isReloading || this.bulletsLeft == this.magCapacity) return;
+    if (this.isReloading || this.bulletsLeft == this.MAG_CAPACITY) return;
     this.isReloading = true;
     tempReload.play();
 
     setTimeout(() => {
-      this.bulletsLeft = this.magCapacity;
+      this.bulletsLeft = this.MAG_CAPACITY;
       this.isReloading = false;
-    }, this.reloadTime * 1000);
+    }, this.RELOAD_TIME * 1000);
   }
 
   draw() {

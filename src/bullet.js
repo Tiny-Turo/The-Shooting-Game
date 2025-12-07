@@ -24,7 +24,7 @@ export class Bullet {
     this.dirX = dirX;
     this.dirY = dirY;
 
-    this.speed = 2000;
+    this.SPEED = 2000;
 
     this.imgCellX = 0;
 
@@ -49,8 +49,8 @@ export class Bullet {
   spawn() {}
 
   update() {
-    this.x += this.dirX * this.speed * time.deltaTime;
-    this.y += this.dirY * this.speed * time.deltaTime;
+    this.x += this.dirX * this.SPEED * time.deltaTime;
+    this.y += this.dirY * this.SPEED * time.deltaTime;
   }
 }
 
@@ -58,7 +58,7 @@ export class RubberBullet extends Bullet {
   constructor(x, y, dirX, dirY) {
     super(x, y, dirX, dirY);
 
-    this.speed = 1000;
+    this.SPEED = 1000;
     this.imgCellX = 1;
     this.bounces = 3;
   }

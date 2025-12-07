@@ -52,7 +52,7 @@ class Player {
   update() {
     //Check if player shoots
     if (mouse.isDown) {
-      if (time.time - this.gun.lastShot > this.gun.fireRate && this.gun.fireRate > 0) {
+      if (time.time - this.gun.lastShot > this.gun.FIRE_RATE && this.gun.FIRE_RATE > 0) {
         this.gun.shoot(this.x, this.y, this.angle);
       }
     }
@@ -66,7 +66,7 @@ class Player {
     dir = normalize(dir);
 
     // Acceleration is multiplied by gun mobility
-    let acceleration = playerConfig.maxSpeed * this.gun.mobility;
+    let acceleration = playerConfig.maxSpeed * this.gun.MOBILITY;
 
     this.velocity.x += dir.x * acceleration * time.deltaTime;
     this.velocity.y += dir.y * acceleration * time.deltaTime;

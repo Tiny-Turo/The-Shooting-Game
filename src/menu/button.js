@@ -7,13 +7,13 @@ export function updateButtons() {
   }
 }
 
-const defaultSize = {
+const DEFAULT_SIZE = {
   x: 200,
   y: 100,
 };
 
 class Button {
-  constructor(position, trigger, size = defaultSize) {
+  constructor(position, trigger, size = DEFAULT_SIZE) {
     this.position = position;
     this.trigger = trigger;
     this.size = size;
