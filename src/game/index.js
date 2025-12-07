@@ -1,6 +1,6 @@
 import { userPlayer } from "./player";
-import { gun } from "./gun"; // Will change :)
-import { updateBullets } from "./bullet";
+import { gun } from "../gun"; // Will change :)
+import { updateBullets } from "../bullet";
 
 export function update() {
   ctx.fillStyle = "#769B46";
