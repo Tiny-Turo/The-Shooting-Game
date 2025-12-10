@@ -12,8 +12,8 @@ bodySheet.src = "/temp/body.png";
 const tempReload = new Howl({ src: ["/temp/reload.mp3"], loop: false, volume: 1 });
 
 export class Gun {
-  constructor(barrel, magazine, grip, body) {
-    this.calculateStats(barrel, magazine, grip, body);
+  constructor(body, magazine, grip, action) {
+    this.calculateStats(body, magazine, grip, action);
 
     this.isReloading = false;
     this.lastShot = 0;
@@ -21,25 +21,25 @@ export class Gun {
     this.SHOOT_NOISE = new Howl({ src: ["/temp/submachine-gun-79846.mp3"], loop: false, volume: 1 });
   }
 
-  calculateStats(barrel, magazine, grip, body) {
+  calculateStats(body, magazine, grip, action) {
     this.bulletsLeft = magazine.CAPACITY;
 
-    this.barrel = barrel;
+    this.body = body;
     this.magazine = magazine;
     this.grip = grip;
-    this.body = body;
+    this.action = action;
 
-    this.MOBILITY = (grip.MOBILITY + body.MOBILITY + barrel.MOBILITY) / 3;
+    this.MOBILITY = (grip.MOBILITY + action.MOBILITY) / 3;
 
-    this.FIRE_RATE = magazine.IS_AUTOMATIC ? body.FIRE_RATE : 0;
+    this.FIRE_RATE = magazine.IS_AUTOMATIC ? action.FIRE_RATE : 0;
     this.ACCURACY = grip.ACCURACY;
 
     this.RELOAD_TIME = magazine.RELOAD_TIME;
     this.MAG_CAPACITY = magazine.CAPACITY;
-    this.BULLETS_AT_ONCE = barrel.BULLETS_AT_ONCE;
-    this.MULTIPLE_BULLET_SPREAD = barrel.MULTIPLE_BULLET_SPREAD;
+    this.BULLETS_AT_ONCE = body.BULLETS_AT_ONCE;
+    this.MULTIPLE_BULLET_SPREAD = body.MULTIPLE_BULLET_SPREAD;
 
-    this.BulletClass = magazine.BulletClass;
+    this.BulletClass = body.BulletClass;
   }
 
   shoot(x, y, angle) {
@@ -82,7 +82,7 @@ export class Gun {
 
   draw() {
     //Mag
-    if (this.barrel.showMag)
+    if (this.body.showMag)
       ctx.drawImage(
         magSheet,
         this.magazine.imgCellX * SPRITE_SIZE,
@@ -95,10 +95,10 @@ export class Gun {
         SPRITE_SIZE * 2
       );
 
-    //Barrel
+    //Body
     ctx.drawImage(
       barrelSheet,
-      this.barrel.imgCellX * SPRITE_SIZE,
+      this.body.imgCellX * SPRITE_SIZE,
       0,
       SPRITE_SIZE,
       SPRITE_SIZE * 2,
@@ -112,6 +112,6 @@ export class Gun {
 
 export let gun;
 
-export function setGun(barrel, magazine, grip, body) {
-  gun = new Gun(barrel, magazine, grip, body);
+export function setGun(body, magazine, grip, action) {
+  gun = new Gun(body, magazine, grip, action);
 }

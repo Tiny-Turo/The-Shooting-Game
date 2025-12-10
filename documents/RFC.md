@@ -8,7 +8,7 @@ For this I need to have two main scenes
 
 # Problem #1
 
-I need a way to keep the gun system modulable - so it is easy to add types of bullets, receivers, barrels and all sorts of things.
+I need a way to keep the gun system modulable - so it is easy to add types of bullets, actions, bodys and all sorts of things.
 
 # Solution
 
@@ -20,9 +20,9 @@ The player class will have two main parts - one focused on the position, velocit
 
 ### Gun Class
 
-Since each gun may vary, the gun class will be made up of many parts. Each part will change the guns stats, such as `fireRate`, `recoil`,and `mobility`. Each gun will also have a type of bullet it uses.
+Since each gun may vary, the gun class will be made up of many parts. Each part will change the guns stats, such as `fireRate`, `accuracy`,and `mobility`. Each gun will also have a type of bullet it uses.
 
-The gun also must be split in a set amount of parts, such as `barrel`, `receiver` and `magazine` so that it is easy to make parts and everything is modulable
+The gun also must be split in a set amount of parts, such as `body`, `action` and `magazine` so that it is easy to make parts and everything is modulable
 
 ### Gun Parts
 
@@ -31,6 +31,8 @@ Each gun part will be in a class named after the gun part - this class will have
 ### Bullet Class
 
 For the bullet class there will be the most variation, some bullets may explode, some may bounce everywhere. Each bullet type will have their own class, unless bullets are simmilar and can be built off eachother. They will have a function that will run when they are shot, and one which will run each frame.
+
+When shot it will be given a `power` number to indicate how much damage it will do - it is also up to the bullet code what else to do with the `power` number.
 
 The info of from where the bullet shot and which direction, then each client will update each bullet and check each collision.
 
