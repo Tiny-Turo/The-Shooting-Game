@@ -1,16 +1,3 @@
-import { pushBullets } from "./bullet";
-
-let barrelSheet = new Image();
-barrelSheet.src = "/temp/barrel.png";
-
-let magSheet = new Image();
-magSheet.src = "/temp/magazine.png";
-
-let bodySheet = new Image();
-bodySheet.src = "/temp/body.png";
-
-const tempReload = new Howl({ src: ["/temp/reload.mp3"], loop: false, volume: 1 });
-
 export class Gun {
   constructor(body, magazine, grip, action) {
     this.calculateStats(body, magazine, grip, action);
@@ -111,7 +98,3 @@ export class Gun {
 }
 
 export let gun;
-
-export function setGun(body, magazine, grip, action) {
-  gun = new Gun(body, magazine, grip, action);
-}
