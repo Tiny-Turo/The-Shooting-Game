@@ -1,36 +1,41 @@
 class Body {
-  constructor(BulletClass, BULLETS_AT_ONCE, MULTIPLE_BULLET_SPREAD, imgCellX, showMag = true) {
+  constructor(BulletClass, bulletsAtOnce, multipleBulletSpread, canModMag = true, canModStock = true) {
     this.BulletClass = BulletClass;
 
-    this.BULLETS_AT_ONCE = BULLETS_AT_ONCE; // Int
-    this.MULTIPLE_BULLET_SPREAD = MULTIPLE_BULLET_SPREAD; // Radians
+    this.bulletsAtOnce = bulletsAtOnce; // Int
+    this.multipleBulletSpread = multipleBulletSpread; // Radians
 
-    this.imgCellX = imgCellX;
-    this.showMag = showMag;
+    this.canModMag = canModMag;
+    this.canModStock = canModStock;
   }
 }
 
 class Magazine {
-  constructor(IS_AUTOMATIC, RELOAD_TIME, CAPACITY, imgCellX) {
-    this.IS_AUTOMATIC = IS_AUTOMATIC; // Bool
-    this.RELOAD_TIME = RELOAD_TIME; // Seconds
-    this.CAPACITY = CAPACITY; // Int
-
-    this.imgCellX = imgCellX;
+  constructor(isAutomatic, reloadTime, capacity) {
+    this.isAutomatic = isAutomatic; // Bool
+    this.reloadTime = reloadTime; // Seconds
+    this.capacity = capacity; // Int
   }
 }
 
 class Grip {
-  constructor(MOBILITY, ACCURACY) {
-    this.MOBILITY = MOBILITY;
-    this.ACCURACY = ACCURACY;
+  constructor(mobility, accuracy) {
+    this.mobility = mobility;
+    this.accuracy = accuracy;
+  }
+}
+
+class Stock {
+  constructor(mobility, accuracy) {
+    this.mobility = mobility;
+    this.accuracy = accuracy;
   }
 }
 
 class Action {
-  constructor(MOBILITY, FIRE_RATE, POWER) {
-    this.MOBILITY = MOBILITY;
-    this.FIRE_RATE = FIRE_RATE; // Seconds
-    this.POWER = POWER;
+  constructor(mobility, fireRate, power) {
+    this.mobility = mobility;
+    this.fireRate = fireRate; // Seconds
+    this.power = power;
   }
 }

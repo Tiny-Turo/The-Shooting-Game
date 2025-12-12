@@ -1,32 +1,18 @@
 let bulletSheet = new Image();
 bulletSheet.src = "/temp/bullet.png";
 
-export let bullets = [];
-
-export function updateBullets() {
-  bullets = bullets.filter((bullet) => !bullet.destroy);
-
-  //Update the players bullets
-  for (const bullet of bullets) {
-    bullet.update();
-    bullet.draw();
-  }
-}
-
-export function pushBullets(newBullets) {
-  bullets = bullets.concat(newBullets);
-}
-
 export class Bullet {
-  constructor(x, y, dirX, dirY) {
+  constructor(x, y, dirX, dirY, power) {
     this.x = x;
     this.y = y;
     this.dirX = dirX;
     this.dirY = dirY;
 
-    this.SPEED = 2000;
+    this.power = power;
 
-    this.imgCellX = 0;
+    this.speed = 2000;
+
+    this.imageIndex = 0;
 
     this.destroy = false;
     this.spawn();
@@ -35,7 +21,7 @@ export class Bullet {
   draw() {
     ctx.drawImage(
       bulletSheet,
-      this.imgCellX * SPRITE_SIZE,
+      this.imageIndex * SPRITE_SIZE,
       0,
       SPRITE_SIZE,
       SPRITE_SIZE,
@@ -49,17 +35,17 @@ export class Bullet {
   spawn() {}
 
   update() {
-    this.x += this.dirX * this.SPEED * time.deltaTime;
-    this.y += this.dirY * this.SPEED * time.deltaTime;
+    this.x += this.dirX * this.speed * time.deltaTime;
+    this.y += this.dirY * this.speed * time.deltaTime;
   }
 }
 
 export class RubberBullet extends Bullet {
-  constructor(x, y, dirX, dirY) {
-    super(x, y, dirX, dirY);
+  constructor(x, y, dirX, dirY, power) {
+    super(x, y, dirX, dirY, power);
 
-    this.SPEED = 1000;
-    this.imgCellX = 1;
+    this.speed = 1000;
+    this.imageIndex = 1;
     this.bounces = 3;
   }
 
@@ -82,10 +68,10 @@ export class RubberBullet extends Bullet {
 }
 
 export class ShotgunShell extends Bullet {
-  constructor(x, y, dirX, dirY) {
-    super(x, y, dirX, dirY);
+  constructor(x, y, dirX, dirY, power) {
+    super(x, y, dirX, dirY, power);
 
-    this.imgCellX = 2;
+    this.imageIndex = 2;
     this.angle = angleTo({ x: 0, y: 0 }, { x: dirX, y: dirY });
   }
 
@@ -94,7 +80,7 @@ export class ShotgunShell extends Bullet {
     ctx.translate(this.x, this.y);
     ctx.rotate(this.angle);
 
-    ctx.drawImage(bulletSheet, this.imgCellX * SPRITE_SIZE, 0, SPRITE_SIZE, SPRITE_SIZE, -SPRITE_SIZE / 2, -SPRITE_SIZE / 2, SPRITE_SIZE, SPRITE_SIZE);
+    ctx.drawImage(bulletSheet, this.imageIndex * SPRITE_SIZE, 0, SPRITE_SIZE, SPRITE_SIZE, -SPRITE_SIZE / 2, -SPRITE_SIZE / 2, SPRITE_SIZE, SPRITE_SIZE);
 
     ctx.restore();
   }
@@ -105,10 +91,10 @@ export class ShotgunShell extends Bullet {
 }
 
 export class SmallBullet extends Bullet {
-  constructor(x, y, dirX, dirY) {
-    super(x, y, dirX, dirY);
+  constructor(x, y, dirX, dirY, power) {
+    super(x, y, dirX, dirY, power);
 
-    this.imgCellX = 3;
+    this.imageIndex = 3;
     this.angle = angleTo({ x: 0, y: 0 }, { x: dirX, y: dirY });
   }
 
@@ -116,9 +102,10 @@ export class SmallBullet extends Bullet {
     ctx.save();
     ctx.translate(this.x, this.y);
     ctx.rotate(this.angle);
+    ctx.drawImage(bulletSheet, this.imageIndex * SPRITE_SIZE, 0, SPRITE_SIZE, SPRITE_SIZE, -SPRITE_SIZE / 2, -SPRITE_SIZE / 2, SPRITE_SIZE, SPRITE_SIZE);
 
-    ctx.drawImage(bulletSheet, this.imgCellX * SPRITE_SIZE, 0, SPRITE_SIZE, SPRITE_SIZE, -SPRITE_SIZE / 2, -SPRITE_SIZE / 2, SPRITE_SIZE, SPRITE_SIZE);
-
+    ctx.fillStyle = "red";
+    ctx.fillRect(-SPRITE_SIZE / 2, -SPRITE_SIZE / 2, SPRITE_SIZE, SPRITE_SIZE);
     ctx.restore();
   }
 
