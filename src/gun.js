@@ -1,5 +1,11 @@
 import { SmallBullet } from "./bullettypes"; //Temp
 
+const body = new Image(); //Temp
+body.src = "/temp/body-top-down.png";
+
+const bodySide = new Image(); //Temp
+bodySide.src = "/temp/body-side.png";
+
 export class Gun {
   constructor(body, magazine, grip, action) {
     this.calculateStats(body, magazine, grip, action);
@@ -75,23 +81,33 @@ export class Gun {
   }
 
   draw() {
-    //Mag
+    //Body
+    // this.body.imageIndex
+    const imageIndex = 0;
+    ctx.drawImage(body, imageIndex * SPRITE_SIZE, 0, SPRITE_SIZE, SPRITE_SIZE * 2, -SPRITE_SIZE / 2, -SPRITE_SIZE * 2.45, SPRITE_SIZE, SPRITE_SIZE * 2);
+  }
 
-    ctx.fillStyle = "red";
-    ctx.fillRect(-10, -100, 20, 100);
+  drawSide() {
+    ctx.save();
+    ctx.translate(canvas.width / 2, canvas.height / 2);
 
-    // //Body
-    // ctx.drawImage(
-    //   barrelSheet,
-    //   this.body.imgCellX * SPRITE_SIZE,
-    //   0,
-    //   SPRITE_SIZE,
-    //   SPRITE_SIZE * 2,
-    //   -SPRITE_SIZE / 2,
-    //   -SPRITE_SIZE * 2.45,
-    //   SPRITE_SIZE,
-    //   SPRITE_SIZE * 2
-    // );
+    let period = 4; // or any duration you want
+    let zigzag = 5 * (1 - Math.abs(((time.time / period) % 2) - 1));
+
+    const imageIndex = zigzag;
+    ctx.drawImage(
+      bodySide,
+      0,
+      imageIndex * SPRITE_SIZE * 2, //Each one is Sprite Size * 2 tall and * 8 tall
+      SPRITE_SIZE * 8,
+      SPRITE_SIZE * 2,
+      -SPRITE_SIZE * 4,
+      -SPRITE_SIZE,
+      SPRITE_SIZE * 8,
+      SPRITE_SIZE * 2
+    );
+
+    ctx.restore();
   }
 }
 

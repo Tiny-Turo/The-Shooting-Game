@@ -12,10 +12,10 @@ Players must be able to move and shoot, there are no special mechanics. The main
 
 The gun will be made out of:
 
-- **body** (bullet type, bullets at once)
-- **magazine** (changes reload time, capacity and if is automatic)
-- **grip** (changes accuracy and mobility)
-- **action** (changes mobility and fire rate and bullet power)
+- **body** (changes bullet type and bullets at once)
+- **magazine** (changes reload time, capacity, and fire rate)
+- **grip** (changes mobility and accuracy)
+- **stock** (changes mobility, accuracy and power)
 
 Each gun will have these stats:
 

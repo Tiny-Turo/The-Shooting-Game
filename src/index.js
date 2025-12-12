@@ -15,7 +15,7 @@ window.changeScene = function (sceneName) {
 };
 
 let currentScene;
-changeScene("game");
+changeScene("menu");
 
 let lastTime;
 window.time = {

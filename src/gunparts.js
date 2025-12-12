@@ -11,10 +11,10 @@ class Body {
 }
 
 class Magazine {
-  constructor(isAutomatic, reloadTime, capacity) {
-    this.isAutomatic = isAutomatic; // Bool
+  constructor(reloadTime, capacity, fireRate) {
     this.reloadTime = reloadTime; // Seconds
     this.capacity = capacity; // Int
+    this.fireRate = fireRate; // Seconds
   }
 }
 
@@ -26,16 +26,9 @@ class Grip {
 }
 
 class Stock {
-  constructor(mobility, accuracy) {
+  constructor(mobility, accuracy, power) {
     this.mobility = mobility;
     this.accuracy = accuracy;
-  }
-}
-
-class Action {
-  constructor(mobility, fireRate, power) {
-    this.mobility = mobility;
-    this.fireRate = fireRate; // Seconds
     this.power = power;
   }
 }
