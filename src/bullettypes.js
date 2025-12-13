@@ -1,8 +1,8 @@
 let bulletSheet = new Image();
-bulletSheet.src = "/temp/bullets.png";
+bulletSheet.src = "/sprites/bullets.png";
 
 export class Bullet {
-  constructor(x, y, dirX, dirY, power) {
+  constructor(x, y, dirX, dirY, power, destroy = false) {
     Object.assign(this, { x, y, dirX, dirY, power });
 
     this.speed = 2000;
@@ -10,7 +10,7 @@ export class Bullet {
     this.imageIndex = 0;
     this.angle = angleTo({ x: 0, y: 0 }, { x: dirX, y: dirY });
 
-    this.destroy = false;
+    this.destroy = destroy;
     this.spawn();
   }
 

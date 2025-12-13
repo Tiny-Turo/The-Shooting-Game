@@ -9,6 +9,8 @@ let gunPartsIndex = {
   magazine: 0,
 };
 
+let PADDING = 15;
+
 function changePart(part, add = 1) {
   gunPartsIndex[part] += add;
 
@@ -18,15 +20,15 @@ function changePart(part, add = 1) {
 }
 
 export function loadButtons() {
-  new Button(0, 0, () => changePart("body", -1), 200, 100);
-  new Button(210, 0, () => changePart("body"), 200, 100);
+  new Button(PADDING, PADDING, () => changePart("body", -1), 200, 100);
+  new Button(200 + PADDING * 2, PADDING, () => changePart("body"), 200, 100);
 
-  new Button(0, 110, () => changePart("grip", -1), 200, 100);
-  new Button(210, 110, () => changePart("grip"), 200, 100);
+  new Button(PADDING, 100 + PADDING * 2, () => changePart("grip", -1), 200, 100);
+  new Button(200 + PADDING * 2, 100 + PADDING * 2, () => changePart("grip"), 200, 100);
 
   new Button(
-    0,
-    220,
+    PADDING,
+    (100 + PADDING) * 2 + PADDING,
     () => changePart("stock", -1),
     200,
     100,
@@ -36,8 +38,8 @@ export function loadButtons() {
   );
 
   new Button(
-    210,
-    220,
+    200 + PADDING * 2,
+    (100 + PADDING) * 2 + PADDING,
     () => changePart("stock"),
     200,
     100,
@@ -47,8 +49,8 @@ export function loadButtons() {
   );
 
   new Button(
-    0,
-    330,
+    PADDING,
+    (100 + PADDING) * 3 + PADDING,
     () => changePart("magazine", -1),
     200,
     100,
@@ -58,8 +60,8 @@ export function loadButtons() {
   );
 
   new Button(
-    210,
-    330,
+    200 + PADDING * 2,
+    (100 + PADDING) * 3 + PADDING,
     () => changePart("magazine"),
     200,
     100,
@@ -72,28 +74,36 @@ export function loadButtons() {
 changePart("body");
 
 let statY = 0;
-let bulletImage = null;
 export function drawStats() {
-  statY = 0;
+  statY = PADDING;
 
-  drawStat(gun.mobility, "mobility: " + gun.mobility);
-  drawStat(gun.accuracy, "accuracy: " + gun.accuracy);
-  if (gun.fireRate > 0) drawStat(gun.fireRate / 0.5, "fire rate: " + gun.fireRate);
-  else drawStat(0, "fire rate: " + gun.fireRate);
-  drawStat(gun.power, "power: " + gun.power);
-  drawStat(gun.reloadTime / 5, "reload time: " + gun.reloadTime);
+  drawStat(gun.mobility / MAX_STAT_VALUE, "mobility");
+  drawStat(gun.accuracy / MAX_STAT_VALUE, "accuracy");
+  drawStat(gun.power / MAX_STAT_VALUE, "power");
 
-  bulletImage = new gun.BulletClass(canvas.width - 450, 50, 0, -1);
+  drawStat(-1, "reload time: " + gun.reloadTime + "s");
+  if (gun.fireRate > 0) drawStat(-1, "fire rate: " + gun.fireRate + "s");
+
+  ctx.fillStyle = "#E2C044";
+  ctx.fillRect(canvas.width - 500 - PADDING * 2, PADDING, 100, 100);
+  let bulletImage = new gun.BulletClass(canvas.width - 450 - PADDING * 2, 50 + PADDING, 0, -1, 0, true);
   bulletImage.draw();
+
+  ctx.font = "25px saeada";
+  ctx.fillStyle = "black";
+  ctx.fillText(gun.magCapacity + "x", canvas.width - 490 - PADDING * 2, 90 + PADDING);
 }
 
 function drawStat(value, name) {
-  ctx.fillStyle = "#D52941";
-  ctx.fillRect(canvas.width - 400, statY, 400 * value, 50);
+  if (value >= 0) {
+    ctx.fillStyle = "#E2C044";
+    ctx.fillRect(canvas.width - 400 - PADDING, statY, 400, 50);
+    ctx.fillStyle = "#D52941";
+    ctx.fillRect(canvas.width - 400 - PADDING, statY, 400 * value, 50);
+  }
 
-  ctx.font = "50px Arial";
+  ctx.font = "40px saeada";
   ctx.fillStyle = "black";
-  ctx.fillText(name, canvas.width - 400 + 20, statY + 40);
-
-  statY += 60;
+  ctx.fillText(name, canvas.width - 380 - PADDING, statY + 36);
+  statY += 50 + PADDING;
 }

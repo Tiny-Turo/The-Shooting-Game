@@ -1,6 +1,6 @@
 const playerConfig = {
   maxSpeed: 2500, // Acceleration
-  minSpeed: 500,
+  minSpeed: 900,
 
   maxRecoil: 2000,
   friction: 10,
@@ -8,11 +8,9 @@ const playerConfig = {
   radius: 50,
 
   image: new Image(),
-  gun: new Image(),
 };
 
-playerConfig.image.src = "/temp/player.png";
-playerConfig.gun.src = "/temp/barrel.png";
+playerConfig.image.src = "/sprites/player.png";
 
 class Player {
   constructor(x, y) {
@@ -67,7 +65,7 @@ class Player {
     dir = normalize(dir);
 
     // Acceleration is multiplied by gun mobility
-    let acceleration = lerp(playerConfig.minSpeed, playerConfig.maxSpeed, this.gun.mobility);
+    let acceleration = lerp(playerConfig.minSpeed, playerConfig.maxSpeed, this.gun.mobility / MAX_STAT_VALUE);
 
     this.velocity.x += dir.x * acceleration * time.deltaTime;
     this.velocity.y += dir.y * acceleration * time.deltaTime;

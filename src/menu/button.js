@@ -1,4 +1,10 @@
 let buttons = [];
+//TEMP
+let buttonClick = new Howl({
+  src: ["/temp/ui-pop-sound-316482.mp3"],
+  loop: false,
+  volume: 1,
+});
 
 export function updateButtons() {
   for (const button of buttons) {
@@ -42,6 +48,9 @@ export class Button {
   }
 
   press() {
-    if (!this.greyOutTrigger?.()) this.trigger();
+    if (!this.greyOutTrigger?.()) {
+      this.trigger();
+      buttonClick.play();
+    }
   }
 }

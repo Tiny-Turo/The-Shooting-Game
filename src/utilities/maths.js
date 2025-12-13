@@ -21,3 +21,7 @@ window.angleTo = function (a, b) {
 window.angleToVector = function (a) {
   return { x: Math.sin(a), y: -Math.cos(a) };
 };
+
+window.clamp = function (a, min, max) {
+  return Math.min(Math.max(a, min), max);
+};

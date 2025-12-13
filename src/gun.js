@@ -1,37 +1,39 @@
 const bodyTopDown = new Image(); //Temp
-bodyTopDown.src = "/temp/body-top-down.png";
+bodyTopDown.src = "/sprites/body-top-down.png";
 
 const gripImage = new Image(); //Temp
-gripImage.src = "/temp/grip.png";
+gripImage.src = "/sprites/grip.png";
 
 const stockImage = new Image(); //Temp
-stockImage.src = "/temp/stock.png";
+stockImage.src = "/sprites/stock.png";
 
 const bodyImage = new Image(); //Temp
-bodyImage.src = "/temp/body-side.png";
+bodyImage.src = "/sprites/body-side.png";
 
 export class Gun {
   constructor(body, grip, stock, magazine) {
+    // if (!body.canModStock) stock = {};
+    // if (!body.canModMag) magazine = {};
     Object.assign(this, { body, grip, stock, magazine });
+
     this.calculateStats();
 
     this.isReloading = false;
     this.lastShot = 0;
 
     this.shootNoise = new Howl({
-      src: ["/temp/submachine-gun-79846.mp3"],
+      src: ["/temp/laser-45816.mp3"],
       loop: false,
       volume: 1,
     });
   }
 
   calculateStats() {
-    this.mobility = (this.grip.mobility + this.stock.mobility + this.body.mobility) / 3;
-
-    this.accuracy = (this.grip.accuracy + this.stock.accuracy) / 2;
+    this.mobility = clamp(this.grip.mobility + this.stock.mobility + this.body.mobility, 0, MAX_STAT_VALUE);
+    this.accuracy = clamp(this.grip.accuracy + this.stock.accuracy, 0, MAX_STAT_VALUE);
+    this.power = clamp(this.stock.power + this.magazine.power + this.body.power, 0, MAX_STAT_VALUE);
 
     this.fireRate = this.magazine.fireRate * this.body.isAutomatic;
-    this.power = (this.stock.power + this.magazine.power) / 2;
 
     this.reloadTime = this.magazine.reloadTime;
     this.magCapacity = this.magazine.capacity;
@@ -54,8 +56,9 @@ export class Gun {
       //Calculate bullet angle, taking into consideration spread if there is more than one bullet
       let bulletAngle = angle - (this.bulletsAtOnce * this.multipleBulletSpread) / 2 + (i + 0.5) * this.multipleBulletSpread;
 
-      // 0.25 is the max and min accuracy angle
-      bulletAngle += (Math.random() - 0.5) * 0.25 * (1 - this.accuracy);
+      // 0.1 is the max and min accuracy angle
+      const accuracyMaxAngle = 0.15;
+      bulletAngle += (Math.random() - 0.5) * accuracyMaxAngle * (1 - this.accuracy / MAX_STAT_VALUE);
       //Calculate the direction
       const bulletDirection = angleToVector(bulletAngle);
       const newBullet = new this.BulletClass(x, y, bulletDirection.x, bulletDirection.y, this.power);

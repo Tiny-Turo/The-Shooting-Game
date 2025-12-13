@@ -24,3 +24,9 @@ body {
   justify-content: center;
   align-items: center;
 }
+
+@font-face {
+  font-family: "saeada";
+  src: url("/font/LTSaeada-Medium.otf") format("woff2");
+  src: url("/font/LTSaeada-Medium.otf") format("woff");
+}
