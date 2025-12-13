@@ -22,21 +22,20 @@ export class Gun {
   }
 
   calculateStats() {
-    // this.bulletsLeft = magazine.capacity;
-    this.bulletsLeft = 10;
+    this.mobility = (this.grip.mobility + this.stock.mobility + this.body.mobility) / 2;
+    this.accuracy = (this.grip.accuracy + this.stock.accuracy) / 2;
 
-    this.mobility = 1;
+    this.fireRate = this.magazine.fireRate * this.body.isAutomatic;
+    this.power = this.stock.power;
 
-    this.fireRate = 0.2;
-    this.accuracy = 1;
-    this.power = 1;
-
-    this.reloadTime = 1;
-    this.magCapacity = 10;
-    this.bulletsAtOnce = 1;
-    this.multipleBulletSpread = 0;
+    this.reloadTime = this.magazine.reloadTime;
+    this.magCapacity = this.magazine.capacity;
+    this.bulletsAtOnce = this.body.bulletsAtOnce;
+    this.multipleBulletSpread = this.body.multipleBulletSpread;
 
     this.BulletClass = this.body.BulletClass;
+
+    this.bulletsLeft = this.magCapacity;
   }
 
   shoot(x, y, angle) {

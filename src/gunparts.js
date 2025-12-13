@@ -3,8 +3,8 @@ import { BallBullet, Bullet, RubberBullet, ShotgunShell, SniperBullet } from "./
 class Body {
   static nextImageIndex = 0;
 
-  constructor(BulletClass, bulletsAtOnce, multipleBulletSpread, isAutomatic = true, canModMag = true, canModStock = true) {
-    Object.assign(this, { BulletClass, bulletsAtOnce, multipleBulletSpread, isAutomatic, canModMag, canModStock });
+  constructor(BulletClass, mobility, bulletsAtOnce, multipleBulletSpread, isAutomatic = true, canModStock = true, canModMag = true) {
+    Object.assign(this, { BulletClass, mobility, bulletsAtOnce, multipleBulletSpread, isAutomatic, canModStock, canModMag });
 
     this.imageIndex = Body.nextImageIndex++;
   }
@@ -42,13 +42,13 @@ class Magazine {
 
 export let gunParts = {
   body: [
-    new Body(Bullet, 1, 0, false, false, false),
-    new Body(Bullet, 1, 0, false, false, false),
-    new Body(SniperBullet, 1, 0, false),
-    new Body(Bullet, 5, 0.1, true, true, false),
-    new Body(ShotgunShell, 2, 0.1),
-    new Body(RubberBullet, 1, 0, true, false, false),
-    new Body(BallBullet, 1, 0, false, false, false),
+    new Body(Bullet, 1, 1, 0, false, false, false),
+    new Body(Bullet, 0.9, 1, 0, false, false, false),
+    new Body(SniperBullet, 0.5, 1, 0, false),
+    new Body(Bullet, 0.3, 5, 0.1, true, false, true),
+    new Body(ShotgunShell, 0.7, 2, 0.1, false, true, false),
+    new Body(RubberBullet, 0.6, 0, true, false, true),
+    new Body(BallBullet, 1, 1, 0, false, false, false),
   ],
   grip: [new Grip(0.2, 1), new Grip(0.4, 0.8), new Grip(0.6, 0.6), new Grip(0.8, 0.4), new Grip(1, 0.2)],
   stock: [new Stock(0.2, 0.8, 1), new Stock(0.6, 1, 0.4), new Stock(1, 0.5, 0.5)],
