@@ -11,8 +11,8 @@ const bodySide = new Image(); //Temp
 bodySide.src = "/temp/body-side.png";
 
 export class Gun {
-  constructor(body, magazine, grip, stock) {
-    Object.assign(this, { body, magazine, grip, stock });
+  constructor(body, grip, stock, magazine) {
+    Object.assign(this, { body, grip, stock, magazine });
     this.calculateStats();
 
     this.isReloading = false;
@@ -111,6 +111,6 @@ export class Gun {
 
 export let gun;
 
-export function setGun(body, magazine, grip, stock) {
-  gun = new Gun(body, magazine, grip, stock);
+export function setGun(body, grip, stock, magazine) {
+  gun = new Gun(body, grip, stock, magazine);
 }

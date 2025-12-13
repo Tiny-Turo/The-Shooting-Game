@@ -3,12 +3,7 @@ bulletSheet.src = "/temp/bullets.png";
 
 export class Bullet {
   constructor(x, y, dirX, dirY, power) {
-    this.x = x;
-    this.y = y;
-    this.dirX = dirX;
-    this.dirY = dirY;
-
-    this.power = power;
+    Object.assign(this, { x, y, dirX, dirY, power });
 
     this.speed = 2000;
 

@@ -21,13 +21,8 @@ const DEFAULT_WIDTH = 400;
 const DEFAULT_HEIGHT = 100;
 
 export class Button {
-  constructor(X, Y, trigger, width = DEFAULT_WIDTH, height = DEFAULT_HEIGHT) {
-    this.X = X;
-    this.Y = Y;
-    this.width = width;
-    this.height = height;
-
-    this.trigger = trigger;
+  constructor(x, y, trigger, width = DEFAULT_WIDTH, height = DEFAULT_HEIGHT, greyOutTrigger = null) {
+    Object.assign(this, { x, y, trigger, width, height, greyOutTrigger });
 
     buttons.push(this);
   }
@@ -35,18 +30,18 @@ export class Button {
   update() {}
 
   isMouseOn() {
-    return mouse.x > this.X && mouse.x < this.X + this.width && mouse.y > this.Y && mouse.y < this.Y + this.height;
+    return mouse.x > this.x && mouse.x < this.x + this.width && mouse.y > this.y && mouse.y < this.y + this.height;
   }
 
   draw() {
     ctx.fillStyle = "#E2C044";
 
-    if (this.isMouseOn()) ctx.fillStyle = "#B19738";
+    if (this.isMouseOn() || this.greyOutTrigger?.()) ctx.fillStyle = "#B19738";
 
-    ctx.fillRect(this.X, this.Y, this.width, this.height);
+    ctx.fillRect(this.x, this.y, this.width, this.height);
   }
 
   press() {
-    this.trigger();
+    if (!this.greyOutTrigger?.()) this.trigger();
   }
 }
