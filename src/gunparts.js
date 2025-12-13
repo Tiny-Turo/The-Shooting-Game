@@ -1,72 +1,54 @@
 import { Bullet, ShotgunShell, SniperBullet } from "./bullettypes";
 
 class Body {
+  static nextImageIndex = 0;
+
   constructor(BulletClass, bulletsAtOnce, multipleBulletSpread, isAutomatic = true, canModMag = true, canModStock = true) {
-    this.BulletClass = BulletClass;
+    Object.assign(this, { BulletClass, bulletsAtOnce, multipleBulletSpread, isAutomatic, canModMag, canModStock });
 
-    this.bulletsAtOnce = bulletsAtOnce; // Int
-    this.multipleBulletSpread = multipleBulletSpread; // Radians
-    this.isAutomatic = isAutomatic;
-
-    this.canModMag = canModMag;
-    this.canModStock = canModStock;
+    this.imageIndex = Body.nextImageIndex++;
   }
 }
-
-export let bodys = [
-  new Body(Bullet, 1, 0, false, false, false),
-  new Body(Bullet, 1, 0, false, false, false),
-  new Body(SniperBullet, 1, 0, false),
-  new Body(Bullet, 5, 0.1),
-  new Body(ShotgunShell, 2, 0.1),
-]
-  //Give each of them a imageIndex
-  .map((part, index) => {
-    part.imageIndex = index;
-    return part;
-  });
 
 class Magazine {
+  static nextImageIndex = 0;
+
   constructor(reloadTime, capacity, fireRate) {
-    this.reloadTime = reloadTime; // Seconds
-    this.capacity = capacity; // Int
-    this.fireRate = fireRate; // Seconds
+    Object.assign(this, { reloadTime, capacity, fireRate });
+
+    this.imageIndex = Magazine.nextImageIndex++;
   }
 }
-
-export let magazines = [new Magazine(1, 20, 0.2)]
-  //Give each of them a imageIndex
-  .map((part, index) => {
-    part.imageIndex = index;
-    return part;
-  });
 
 class Grip {
+  static nextImageIndex = 0;
+
   constructor(mobility, accuracy) {
-    this.mobility = mobility;
-    this.accuracy = accuracy;
+    Object.assign(this, { mobility, accuracy });
+
+    this.imageIndex = Grip.nextImageIndex++;
   }
 }
-
-// These are all for the whole game
-export let grips = [new Grip(0.2, 1), new Grip(0.4, 0.8), new Grip(0.6, 0.6), new Grip(0.8, 0.4), new Grip(1, 0.2)]
-  //Give each of them a imageIndex
-  .map((part, index) => {
-    part.imageIndex = index;
-    return part;
-  });
 
 class Stock {
+  static nextImageIndex = 0;
+
   constructor(mobility, accuracy, power) {
-    this.mobility = mobility;
-    this.accuracy = accuracy;
-    this.power = power;
+    Object.assign(this, { mobility, accuracy, power });
+
+    this.imageIndex = Stock.nextImageIndex++;
   }
 }
 
-export let stocks = [new Stock(0.2, 0.8, 1), new Stock(0.6, 1, 0.4), new Stock(1, 0.5, 0.5)]
-  //Give each of them a imageIndex
-  .map((part, index) => {
-    part.imageIndex = index;
-    return part;
-  });
+export let gunParts = {
+  body: [
+    new Body(Bullet, 1, 0, false, false, false),
+    new Body(Bullet, 1, 0, false, false, false),
+    new Body(SniperBullet, 1, 0, false),
+    new Body(Bullet, 5, 0.1, true, true, false),
+    new Body(ShotgunShell, 2, 0.1),
+  ],
+  magazine: [new Magazine(1, 20, 0.2)],
+  grip: [new Grip(0.2, 1), new Grip(0.4, 0.8), new Grip(0.6, 0.6), new Grip(0.8, 0.4), new Grip(1, 0.2)],
+  stock: [new Stock(0.2, 0.8, 1), new Stock(0.6, 1, 0.4), new Stock(1, 0.5, 0.5)],
+};

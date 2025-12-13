@@ -1,5 +1,3 @@
-import { bodys, grips, magazines, stocks } from "./gunparts";
-
 const body = new Image(); //Temp
 body.src = "/temp/body-top-down.png";
 
@@ -14,7 +12,8 @@ bodySide.src = "/temp/body-side.png";
 
 export class Gun {
   constructor(body, magazine, grip, stock) {
-    this.calculateStats(body, magazine, grip, stock);
+    Object.assign(this, { body, magazine, grip, stock });
+    this.calculateStats();
 
     this.isReloading = false;
     this.lastShot = 0;
@@ -22,14 +21,9 @@ export class Gun {
     this.shootNoise = new Howl({ src: ["/temp/submachine-gun-79846.mp3"], loop: false, volume: 1 });
   }
 
-  calculateStats(body, magazine, grip, stock) {
+  calculateStats() {
     // this.bulletsLeft = magazine.capacity;
     this.bulletsLeft = 10;
-
-    this.body = body;
-    this.magazine = magazine;
-    this.grip = grip;
-    this.stock = stock;
 
     this.mobility = 1;
 
@@ -42,7 +36,7 @@ export class Gun {
     this.bulletsAtOnce = 1;
     this.multipleBulletSpread = 0;
 
-    this.BulletClass = body.BulletClass;
+    this.BulletClass = this.body.BulletClass;
   }
 
   shoot(x, y, angle) {
@@ -51,8 +45,6 @@ export class Gun {
     this.shootNoise.play();
     //Set lastShot
     this.lastShot = time.time;
-
-    let newBullets = [];
 
     for (let i = 0; i < this.bulletsAtOnce; i++) {
       //Calculate bullet angle, taking into consideration spread if there is more than one bullet
@@ -63,10 +55,8 @@ export class Gun {
       //Calculate the direction
       const bulletDirection = angleToVector(bulletAngle);
       const newBullet = new this.BulletClass(x, y, bulletDirection.x, bulletDirection.y, this.power);
-      newBullets.push(newBullet);
+      pushBullet(newBullet);
     }
-
-    pushBullets(newBullets);
 
     this.bulletsLeft -= 1; //Even if it shoots multiple bullets at once, count it as one round
     if (this.bulletsLeft <= 0) {
@@ -92,38 +82,35 @@ export class Gun {
     ctx.drawImage(body, imageIndex * SPRITE_SIZE, 0, SPRITE_SIZE, SPRITE_SIZE * 2, -SPRITE_SIZE / 2, -SPRITE_SIZE * 2.45, SPRITE_SIZE, SPRITE_SIZE * 2);
   }
 
+  drawPart(image, index) {
+    ctx.drawImage(
+      image,
+      0,
+      index * SPRITE_SIZE * 2, //Each one is Sprite Size * 2 tall and * 8 tall
+      SPRITE_SIZE * 8,
+      SPRITE_SIZE * 2,
+      -SPRITE_SIZE * 4,
+      -SPRITE_SIZE,
+      SPRITE_SIZE * 8,
+      SPRITE_SIZE * 2
+    );
+  }
+
   drawSide() {
     ctx.save();
     ctx.translate(canvas.width / 2, canvas.height / 2);
 
-    const bodyIndex = this.body.imageIndex;
-    ctx.drawImage(
-      bodySide,
-      0,
-      bodyIndex * SPRITE_SIZE * 2, //Each one is Sprite Size * 2 tall and * 8 tall
-      SPRITE_SIZE * 8,
-      SPRITE_SIZE * 2,
-      -SPRITE_SIZE * 4,
-      -SPRITE_SIZE,
-      SPRITE_SIZE * 8,
-      SPRITE_SIZE * 2
-    );
+    this.drawPart(bodySide, this.body.imageIndex);
+    this.drawPart(grip, this.grip.imageIndex);
 
-    const gripIndex = this.grip.imageIndex;
-    ctx.drawImage(
-      grip,
-      0,
-      gripIndex * SPRITE_SIZE * 2, //Each one is Sprite Size * 2 tall and * 8 tall
-      SPRITE_SIZE * 8,
-      SPRITE_SIZE * 2,
-      -SPRITE_SIZE * 4,
-      -SPRITE_SIZE,
-      SPRITE_SIZE * 8,
-      SPRITE_SIZE * 2
-    );
+    if (this.body.canModStock) this.drawPart(stock, this.stock.imageIndex);
 
     ctx.restore();
   }
 }
 
-export let gun = new Gun(bodys[0], magazines[0], grips[0], stocks[0]);
+export let gun;
+
+export function setGun(body, magazine, grip, stock) {
+  gun = new Gun(body, magazine, grip, stock);
+}

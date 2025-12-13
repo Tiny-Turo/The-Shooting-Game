@@ -1,5 +1,7 @@
 import { gun } from "../gun";
+import "./modgun";
 import { updateButtons, Button, clearButtons } from "./button";
+import { loadButtons } from "./modgun";
 
 export function update() {
   ctx.fillStyle = "#D8D0C1";
@@ -12,6 +14,7 @@ export function update() {
 
 export function load() {
   new Button(canvas.width / 2 - 200, canvas.height / 2 + 150, play);
+  loadButtons();
 }
 
 export function unload() {

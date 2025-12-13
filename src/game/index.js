@@ -15,4 +15,6 @@ export function load() {
   userPlayer.giveGun(gun);
 }
 
-export function unload() {}
+export function unload() {
+  userPlayer.destroy();
+}

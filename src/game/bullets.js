@@ -10,6 +10,6 @@ export function updateBullets() {
   }
 }
 
-window.pushBullets = function (newBullets) {
-  bullets = bullets.concat(newBullets);
+window.pushBullet = function (newBullet) {
+  bullets.push(newBullet);
 };
