@@ -1,14 +1,14 @@
-const body = new Image(); //Temp
-body.src = "/temp/body-top-down.png";
+const bodyTopDown = new Image(); //Temp
+bodyTopDown.src = "/temp/body-top-down.png";
 
-const grip = new Image(); //Temp
-grip.src = "/temp/grip.png";
+const gripImage = new Image(); //Temp
+gripImage.src = "/temp/grip.png";
 
-const stock = new Image(); //Temp
-stock.src = "/temp/stock.png";
+const stockImage = new Image(); //Temp
+stockImage.src = "/temp/stock.png";
 
-const bodySide = new Image(); //Temp
-bodySide.src = "/temp/body-side.png";
+const bodyImage = new Image(); //Temp
+bodyImage.src = "/temp/body-side.png";
 
 export class Gun {
   constructor(body, grip, stock, magazine) {
@@ -18,15 +18,20 @@ export class Gun {
     this.isReloading = false;
     this.lastShot = 0;
 
-    this.shootNoise = new Howl({ src: ["/temp/submachine-gun-79846.mp3"], loop: false, volume: 1 });
+    this.shootNoise = new Howl({
+      src: ["/temp/submachine-gun-79846.mp3"],
+      loop: false,
+      volume: 1,
+    });
   }
 
   calculateStats() {
-    this.mobility = (this.grip.mobility + this.stock.mobility + this.body.mobility) / 2;
+    this.mobility = (this.grip.mobility + this.stock.mobility + this.body.mobility) / 3;
+
     this.accuracy = (this.grip.accuracy + this.stock.accuracy) / 2;
 
     this.fireRate = this.magazine.fireRate * this.body.isAutomatic;
-    this.power = this.stock.power;
+    this.power = (this.stock.power + this.magazine.power) / 2;
 
     this.reloadTime = this.magazine.reloadTime;
     this.magCapacity = this.magazine.capacity;
@@ -78,7 +83,7 @@ export class Gun {
   draw() {
     //Body
     const imageIndex = this.body.imageIndex;
-    ctx.drawImage(body, imageIndex * SPRITE_SIZE, 0, SPRITE_SIZE, SPRITE_SIZE * 2, -SPRITE_SIZE / 2, -SPRITE_SIZE * 2.45, SPRITE_SIZE, SPRITE_SIZE * 2);
+    ctx.drawImage(bodyTopDown, imageIndex * SPRITE_SIZE, 0, SPRITE_SIZE, SPRITE_SIZE * 2, -SPRITE_SIZE / 2, -SPRITE_SIZE * 2.45, SPRITE_SIZE, SPRITE_SIZE * 2);
   }
 
   drawPart(image, index) {
@@ -99,10 +104,11 @@ export class Gun {
     ctx.save();
     ctx.translate(canvas.width / 2, canvas.height / 2);
 
-    this.drawPart(bodySide, this.body.imageIndex);
-    this.drawPart(grip, this.grip.imageIndex);
+    this.drawPart(bodyImage, this.body.imageIndex);
+    this.drawPart(gripImage, this.grip.imageIndex);
 
-    if (this.body.canModStock) this.drawPart(stock, this.stock.imageIndex);
+    this.drawPart(stockImage, this.stock.imageIndex);
+    // console.log(this.stock.imageIndex);
 
     ctx.restore();
   }

@@ -1,13 +1,14 @@
 import { gun } from "../gun";
 import "./modgun";
 import { updateButtons, Button, clearButtons } from "./button";
-import { loadButtons } from "./modgun";
+import { drawStats, loadButtons } from "./modgun";
 
 export function update() {
   ctx.fillStyle = "#D8D0C1";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   updateButtons();
+  drawStats();
 
   gun.drawSide();
 }

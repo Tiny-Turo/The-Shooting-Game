@@ -70,3 +70,30 @@ export function loadButtons() {
 }
 
 changePart("body");
+
+let statY = 0;
+let bulletImage = null;
+export function drawStats() {
+  statY = 0;
+
+  drawStat(gun.mobility, "mobility: " + gun.mobility);
+  drawStat(gun.accuracy, "accuracy: " + gun.accuracy);
+  if (gun.fireRate > 0) drawStat(gun.fireRate / 0.5, "fire rate: " + gun.fireRate);
+  else drawStat(0, "fire rate: " + gun.fireRate);
+  drawStat(gun.power, "power: " + gun.power);
+  drawStat(gun.reloadTime / 5, "reload time: " + gun.reloadTime);
+
+  bulletImage = new gun.BulletClass(canvas.width - 450, 50, 0, -1);
+  bulletImage.draw();
+}
+
+function drawStat(value, name) {
+  ctx.fillStyle = "#D52941";
+  ctx.fillRect(canvas.width - 400, statY, 400 * value, 50);
+
+  ctx.font = "50px Arial";
+  ctx.fillStyle = "black";
+  ctx.fillText(name, canvas.width - 400 + 20, statY + 40);
+
+  statY += 60;
+}

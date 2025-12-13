@@ -1,5 +1,7 @@
 const playerConfig = {
-  maxSpeed: 4000, // Acceleration
+  maxSpeed: 2500, // Acceleration
+  minSpeed: 500,
+
   maxRecoil: 2000,
   friction: 10,
 
@@ -65,7 +67,7 @@ class Player {
     dir = normalize(dir);
 
     // Acceleration is multiplied by gun mobility
-    let acceleration = playerConfig.maxSpeed * this.gun.mobility;
+    let acceleration = lerp(playerConfig.minSpeed, playerConfig.maxSpeed, this.gun.mobility);
 
     this.velocity.x += dir.x * acceleration * time.deltaTime;
     this.velocity.y += dir.y * acceleration * time.deltaTime;
