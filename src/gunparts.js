@@ -1,4 +1,4 @@
-import { Bullet, ShotgunShell, SniperBullet } from "./bullettypes";
+import { BallBullet, Bullet, RubberBullet, ShotgunShell, SniperBullet } from "./bullettypes";
 
 class Body {
   static nextImageIndex = 0;
@@ -47,6 +47,8 @@ export let gunParts = {
     new Body(SniperBullet, 1, 0, false),
     new Body(Bullet, 5, 0.1, true, true, false),
     new Body(ShotgunShell, 2, 0.1),
+    new Body(RubberBullet, 1, 0, true, false, false),
+    new Body(BallBullet, 1, 0, false, false, false),
   ],
   grip: [new Grip(0.2, 1), new Grip(0.4, 0.8), new Grip(0.6, 0.6), new Grip(0.8, 0.4), new Grip(1, 0.2)],
   stock: [new Stock(0.2, 0.8, 1), new Stock(0.6, 1, 0.4), new Stock(1, 0.5, 0.5)],

@@ -28,7 +28,7 @@ export class Gun {
     this.mobility = 1;
 
     this.fireRate = 0.2;
-    this.accuracy = 0.2;
+    this.accuracy = 1;
     this.power = 1;
 
     this.reloadTime = 1;

@@ -9,33 +9,59 @@ let gunPartsIndex = {
   magazine: 0,
 };
 
-function changePart(part) {
-  gunPartsIndex[part]++;
+function changePart(part, add = 1) {
+  gunPartsIndex[part] += add;
 
-  if (gunPartsIndex[part] >= gunParts[part].length) gunPartsIndex[part] = 0;
+  gunPartsIndex[part] = (gunPartsIndex[part] + gunParts[part].length) % gunParts[part].length;
+
   setGun(gunParts.body[gunPartsIndex.body], gunParts.grip[gunPartsIndex.grip], gunParts.stock[gunPartsIndex.stock], gunParts.magazine[gunPartsIndex.magazine]);
 }
 
 export function loadButtons() {
-  new Button(0, 0, () => changePart("body"));
+  new Button(0, 0, () => changePart("body", -1), 200, 100);
+  new Button(210, 0, () => changePart("body"), 200, 100);
 
-  new Button(0, 220, () => changePart("grip"));
+  new Button(0, 110, () => changePart("grip", -1), 200, 100);
+  new Button(210, 110, () => changePart("grip"), 200, 100);
 
   new Button(
     0,
-    330,
-    () => changePart("stock"),
-    400,
+    220,
+    () => changePart("stock", -1),
+    200,
     100,
     () => {
       return !gun.body.canModStock;
     }
   );
+
+  new Button(
+    210,
+    220,
+    () => changePart("stock"),
+    200,
+    100,
+    () => {
+      return !gun.body.canModStock;
+    }
+  );
+
   new Button(
     0,
-    110,
+    330,
+    () => changePart("magazine", -1),
+    200,
+    100,
+    () => {
+      return !gun.body.canModMag;
+    }
+  );
+
+  new Button(
+    210,
+    330,
     () => changePart("magazine"),
-    400,
+    200,
     100,
     () => {
       return !gun.body.canModMag;

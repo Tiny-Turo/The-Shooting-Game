@@ -70,3 +70,16 @@ export class SniperBullet extends Bullet {
     super.draw();
   }
 }
+
+export class RubberBullet extends Bullet {
+  constructor(x, y, dirX, dirY, power) {
+    super(x, y, dirX, dirY, power);
+
+    this.imageIndex = 4;
+  }
+
+  update() {
+    super.update();
+    super.draw();
+  }
+}
