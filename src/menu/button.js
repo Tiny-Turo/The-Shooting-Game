@@ -1,4 +1,4 @@
-export let buttons = [];
+let buttons = [];
 
 export function updateButtons() {
   for (const button of buttons) {
@@ -7,21 +7,25 @@ export function updateButtons() {
   }
 }
 
+export function clearButtons() {
+  buttons = [];
+}
+
 addEventListener("mousedown", (e) => {
   for (const button of buttons) {
     if (button.isMouseOn()) button.press();
   }
 });
 
-const DEFAULT_WIDTH = 300;
+const DEFAULT_WIDTH = 400;
 const DEFAULT_HEIGHT = 100;
 
 export class Button {
-  constructor(X, Y, trigger, WIDTH = DEFAULT_WIDTH, HEIGHT = DEFAULT_HEIGHT) {
+  constructor(X, Y, trigger, width = DEFAULT_WIDTH, height = DEFAULT_HEIGHT) {
     this.X = X;
     this.Y = Y;
-    this.WIDTH = WIDTH;
-    this.HEIGHT = HEIGHT;
+    this.width = width;
+    this.height = height;
 
     this.trigger = trigger;
 
@@ -31,15 +35,15 @@ export class Button {
   update() {}
 
   isMouseOn() {
-    return mouse.x > this.X && mouse.x < this.X + this.WIDTH && mouse.y > this.Y && mouse.y < this.Y + this.HEIGHT;
+    return mouse.x > this.X && mouse.x < this.X + this.width && mouse.y > this.Y && mouse.y < this.Y + this.height;
   }
 
   draw() {
-    ctx.fillStyle = "#769B46";
+    ctx.fillStyle = "#E2C044";
 
-    if (this.isMouseOn()) ctx.fillStyle = "red";
+    if (this.isMouseOn()) ctx.fillStyle = "#B19738";
 
-    ctx.fillRect(this.X, this.Y, this.WIDTH, this.HEIGHT);
+    ctx.fillRect(this.X, this.Y, this.width, this.height);
   }
 
   press() {

@@ -1,14 +1,20 @@
-import { SmallBullet } from "./bullettypes"; //Temp
+import { bodys, grips, magazines, stocks } from "./gunparts";
 
 const body = new Image(); //Temp
 body.src = "/temp/body-top-down.png";
+
+const grip = new Image(); //Temp
+grip.src = "/temp/grip.png";
+
+const stock = new Image(); //Temp
+stock.src = "/temp/stock.png";
 
 const bodySide = new Image(); //Temp
 bodySide.src = "/temp/body-side.png";
 
 export class Gun {
-  constructor(body, magazine, grip, action) {
-    this.calculateStats(body, magazine, grip, action);
+  constructor(body, magazine, grip, stock) {
+    this.calculateStats(body, magazine, grip, stock);
 
     this.isReloading = false;
     this.lastShot = 0;
@@ -16,19 +22,19 @@ export class Gun {
     this.shootNoise = new Howl({ src: ["/temp/submachine-gun-79846.mp3"], loop: false, volume: 1 });
   }
 
-  calculateStats(body, magazine, grip, action) {
+  calculateStats(body, magazine, grip, stock) {
     // this.bulletsLeft = magazine.capacity;
     this.bulletsLeft = 10;
 
     this.body = body;
     this.magazine = magazine;
     this.grip = grip;
-    this.action = action;
+    this.stock = stock;
 
     this.mobility = 1;
 
-    this.fireRate = 0.1;
-    this.accuracy = 0.9;
+    this.fireRate = 0.2;
+    this.accuracy = 0.2;
     this.power = 1;
 
     this.reloadTime = 1;
@@ -36,12 +42,12 @@ export class Gun {
     this.bulletsAtOnce = 1;
     this.multipleBulletSpread = 0;
 
-    this.BulletClass = SmallBullet;
+    this.BulletClass = body.BulletClass;
   }
 
   shoot(x, y, angle) {
     //If has no bullets left, is reloading, or fire rate has not passed yet - return
-    if (this.bulletsLeft <= 0 || this.isReloading || (time.time - this.lastShot < this.fireRate && this.fireRate > 0)) return;
+    if (this.bulletsLeft <= 0 || this.isReloading || time.time - this.lastShot < this.fireRate) return;
     this.shootNoise.play();
     //Set lastShot
     this.lastShot = time.time;
@@ -82,8 +88,7 @@ export class Gun {
 
   draw() {
     //Body
-    // this.body.imageIndex
-    const imageIndex = 0;
+    const imageIndex = this.body.imageIndex;
     ctx.drawImage(body, imageIndex * SPRITE_SIZE, 0, SPRITE_SIZE, SPRITE_SIZE * 2, -SPRITE_SIZE / 2, -SPRITE_SIZE * 2.45, SPRITE_SIZE, SPRITE_SIZE * 2);
   }
 
@@ -91,14 +96,24 @@ export class Gun {
     ctx.save();
     ctx.translate(canvas.width / 2, canvas.height / 2);
 
-    let period = 4; // or any duration you want
-    let zigzag = 5 * (1 - Math.abs(((time.time / period) % 2) - 1));
-
-    const imageIndex = zigzag;
+    const bodyIndex = this.body.imageIndex;
     ctx.drawImage(
       bodySide,
       0,
-      imageIndex * SPRITE_SIZE * 2, //Each one is Sprite Size * 2 tall and * 8 tall
+      bodyIndex * SPRITE_SIZE * 2, //Each one is Sprite Size * 2 tall and * 8 tall
+      SPRITE_SIZE * 8,
+      SPRITE_SIZE * 2,
+      -SPRITE_SIZE * 4,
+      -SPRITE_SIZE,
+      SPRITE_SIZE * 8,
+      SPRITE_SIZE * 2
+    );
+
+    const gripIndex = this.grip.imageIndex;
+    ctx.drawImage(
+      grip,
+      0,
+      gripIndex * SPRITE_SIZE * 2, //Each one is Sprite Size * 2 tall and * 8 tall
       SPRITE_SIZE * 8,
       SPRITE_SIZE * 2,
       -SPRITE_SIZE * 4,
@@ -111,4 +126,4 @@ export class Gun {
   }
 }
 
-export let gun = new Gun();
+export let gun = new Gun(bodys[0], magazines[0], grips[0], stocks[0]);

@@ -52,7 +52,7 @@ class Player {
 
   update() {
     //Check if player shoots
-    if (mouse.isDown) {
+    if (mouse.isDown && this.gun.fireRate > 0) {
       this.gun.shoot(this.x, this.y, this.angle);
     }
 

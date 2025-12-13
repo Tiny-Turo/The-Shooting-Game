@@ -6,9 +6,8 @@ export function update() {
   ctx.fillStyle = "#769B46";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  userPlayer.update();
-
   updateBullets();
+  userPlayer.update();
 }
 
 export function load() {
