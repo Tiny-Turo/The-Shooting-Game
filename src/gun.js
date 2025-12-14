@@ -110,7 +110,7 @@ export class Gun {
     this.drawPart(bodyImage, this.body.imageIndex);
     this.drawPart(gripImage, this.grip.imageIndex);
 
-    this.drawPart(stockImage, this.stock.imageIndex);
+    if (this.body.canModStock) this.drawPart(stockImage, this.stock.imageIndex);
     // console.log(this.stock.imageIndex);
 
     ctx.restore();

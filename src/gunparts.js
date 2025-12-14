@@ -1,5 +1,5 @@
 import { BallBullet, Bullet, RubberBullet, ShotgunShell, SniperBullet } from "./bullettypes";
-window.MAX_STAT_VALUE = 8;
+window.MAX_STAT_VALUE = 12;
 class Body {
   static nextImageIndex = 0;
 
@@ -45,8 +45,8 @@ export const gunParts = {
   body: [
     new Body({
       BulletClass: Bullet,
-      mobility: 5,
-      power: 4,
+      mobility: 7,
+      power: 7,
       bulletsAtOnce: 1,
       multipleBulletSpread: 0,
       isAutomatic: false,
@@ -56,8 +56,8 @@ export const gunParts = {
 
     new Body({
       BulletClass: Bullet,
-      mobility: 4,
-      power: 5,
+      mobility: 7,
+      power: 7,
       bulletsAtOnce: 1,
       multipleBulletSpread: 0,
       isAutomatic: false,
@@ -67,8 +67,8 @@ export const gunParts = {
 
     new Body({
       BulletClass: SniperBullet,
-      mobility: 2,
-      power: 7,
+      mobility: 0,
+      power: 10,
       bulletsAtOnce: 1,
       multipleBulletSpread: 0,
       isAutomatic: false,
@@ -76,10 +76,10 @@ export const gunParts = {
 
     new Body({
       BulletClass: Bullet,
-      mobility: 3,
+      mobility: 1,
       power: 2,
-      bulletsAtOnce: 5,
-      multipleBulletSpread: 0.1,
+      bulletsAtOnce: 3,
+      multipleBulletSpread: 0.05,
       isAutomatic: true,
       canModStock: false,
       canModMag: true,
@@ -88,7 +88,7 @@ export const gunParts = {
     new Body({
       BulletClass: ShotgunShell,
       mobility: 4,
-      power: 7,
+      power: 8,
       bulletsAtOnce: 2,
       multipleBulletSpread: 0.1,
       isAutomatic: false,
@@ -98,9 +98,9 @@ export const gunParts = {
 
     new Body({
       BulletClass: RubberBullet,
-      mobility: 3,
-      power: 3,
-      bulletsAtOnce: 0.6,
+      mobility: 2,
+      power: 5,
+      bulletsAtOnce: 1,
       multipleBulletSpread: 0,
       isAutomatic: true,
       canModStock: false,
@@ -109,7 +109,7 @@ export const gunParts = {
 
     new Body({
       BulletClass: BallBullet,
-      mobility: 6,
+      mobility: 8,
       power: 6,
       bulletsAtOnce: 1,
       multipleBulletSpread: 0,
@@ -120,17 +120,17 @@ export const gunParts = {
   ],
 
   grip: [
-    new Grip({ mobility: -1, accuracy: 4 }),
-    new Grip({ mobility: 0, accuracy: 3 }),
-    new Grip({ mobility: 1, accuracy: 2 }),
-    new Grip({ mobility: 2, accuracy: 1 }),
-    new Grip({ mobility: 3, accuracy: 0 }),
+    new Grip({ mobility: 0, accuracy: 7 }),
+    new Grip({ mobility: 1, accuracy: 6 }),
+    new Grip({ mobility: 2, accuracy: 5 }),
+    new Grip({ mobility: 3, accuracy: 4 }),
+    new Grip({ mobility: 4, accuracy: 3 }),
   ],
 
   stock: [
-    new Stock({ mobility: -2, accuracy: 0, power: 5 }),
-    new Stock({ mobility: 2, accuracy: 2, power: -2 }),
-    new Stock({ mobility: 2, accuracy: 0, power: 1 }),
+    new Stock({ mobility: -2, accuracy: 3, power: 5 }),
+    new Stock({ mobility: 2, accuracy: 5, power: -2 }),
+    new Stock({ mobility: 2, accuracy: 4, power: 1 }),
   ],
 
   magazine: [
