@@ -80,9 +80,9 @@ export function drawStats() {
   drawStat(gun.mobility / MAX_STAT_VALUE, "mobility");
   drawStat(gun.accuracy / MAX_STAT_VALUE, "accuracy");
   drawStat(gun.power / MAX_STAT_VALUE, "power");
+  drawStat(gun.fireRate / MAX_STAT_VALUE, "fire rate");
 
   drawStat(-1, "reload time: " + gun.reloadTime + "s");
-  if (gun.fireRate > 0) drawStat(-1, "fire rate: " + gun.fireRate + "s");
 
   ctx.fillStyle = "#E2C044";
   ctx.fillRect(canvas.width - 500 - PADDING * 2, PADDING, 100, 100);

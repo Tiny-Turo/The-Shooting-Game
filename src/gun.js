@@ -32,20 +32,21 @@ export class Gun {
   }
 
   calculateStats() {
-    this.mobility = clamp(this.body.mobility + this.grip.mobility + this.stock.mobility, 1, MAX_STAT_VALUE);
+    this.mobility = clamp(this.body.mobility + this.grip.mobility + this.stock.mobility + this.magazine.mobility, 1, MAX_STAT_VALUE);
     this.accuracy = clamp(this.body.accuracy + this.grip.accuracy + this.stock.accuracy, 1, MAX_STAT_VALUE);
     this.power = clamp(this.body.power + this.stock.power + this.magazine.power, 1, MAX_STAT_VALUE);
+    this.fireRate = clamp(this.body.fireRate, 0, MAX_STAT_VALUE);
 
     // this.mobility = clamp(this.body.mobility, 1, MAX_STAT_VALUE);
     // this.accuracy = clamp(this.body.accuracy, 1, MAX_STAT_VALUE);
     // this.power = clamp(this.body.power, 1, MAX_STAT_VALUE);
 
-    this.fireRate = this.magazine.fireRate * this.body.isAutomatic;
     this.reloadTime = this.magazine.reloadTime;
 
     this.magCapacity = this.magazine.capacity;
     this.bulletsAtOnce = this.body.bulletsAtOnce;
     this.multipleBulletSpread = this.body.multipleBulletSpread;
+    this.multipleBulletSplit = this.body.multipleBulletSplit;
 
     this.BulletClass = this.body.BulletClass;
 
@@ -54,7 +55,7 @@ export class Gun {
 
   shoot(x, y, angle) {
     //If has no bullets left, is reloading, or fire rate has not passed yet - return
-    if (this.bulletsLeft <= 0 || this.isReloading || time.time - this.lastShot < this.fireRate) return;
+    if (this.bulletsLeft <= 0 || this.isReloading || (this.fireRate > 0 && time.time - this.lastShot < 60 / (this.fireRate * 50))) return;
     this.shootNoise.play();
     //Set lastShot
     this.lastShot = time.time;
@@ -68,7 +69,15 @@ export class Gun {
       bulletAngle += (Math.random() - 0.5) * accuracyMaxAngle * (1 - this.accuracy / MAX_STAT_VALUE);
       //Calculate the direction
       const bulletDirection = angleToVector(bulletAngle);
-      const newBullet = new this.BulletClass(x, y, bulletDirection.x, bulletDirection.y, this.power);
+
+      let spawnX = x + Math.sin(angle) * ((this.body.spriteLength / 64) * 200 + SPRITE_SIZE * 0.45);
+      let spawnY = y - Math.cos(angle) * ((this.body.spriteLength / 64) * 200 + SPRITE_SIZE * 0.45);
+
+      const offsetSpawn = (i - 0.5) * this.multipleBulletSplit - (this.multipleBulletSplit * this.multipleBulletSpread) / 2;
+      spawnX += Math.cos(angle) * offsetSpawn;
+      spawnY += Math.sin(angle) * offsetSpawn;
+
+      const newBullet = new this.BulletClass(spawnX, spawnY, bulletDirection.x, bulletDirection.y, this.power);
       pushBullet(newBullet);
     }
 

@@ -3,9 +3,33 @@ window.MAX_STAT_VALUE = 24;
 class Body {
   static nextImageIndex = 0;
 
-  constructor({ BulletClass, mobility, accuracy, power, bulletsAtOnce, multipleBulletSpread, isAutomatic = true, canModStock = true, canModMag = true }) {
+  constructor({
+    spriteLength = 200, // On figma sprite
+    BulletClass,
+    mobility,
+    accuracy,
+    power,
+    fireRate,
+    bulletsAtOnce = 1,
+    multipleBulletSpread = 0,
+    multipleBulletSplit = 0,
+    canModStock = true,
+    canModMag = true,
+  }) {
     //Each body has base mobility and power
-    Object.assign(this, { BulletClass, mobility, accuracy, power, bulletsAtOnce, multipleBulletSpread, isAutomatic, canModStock, canModMag });
+    Object.assign(this, {
+      spriteLength,
+      BulletClass,
+      mobility,
+      accuracy,
+      power,
+      fireRate,
+      bulletsAtOnce,
+      multipleBulletSpread,
+      multipleBulletSplit,
+      canModStock,
+      canModMag,
+    });
 
     this.imageIndex = Body.nextImageIndex++;
   }
@@ -34,8 +58,8 @@ class Stock {
 class Magazine {
   static nextImageIndex = 0;
 
-  constructor({ reloadTime, capacity, fireRate, power }) {
-    Object.assign(this, { reloadTime, capacity, fireRate, power });
+  constructor({ reloadTime, capacity, power, mobility }) {
+    Object.assign(this, { reloadTime, capacity, power, mobility });
 
     this.imageIndex = Magazine.nextImageIndex++;
   }
@@ -44,95 +68,68 @@ class Magazine {
 export const gunParts = {
   body: [
     new Body({
+      spriteLength: 23,
       BulletClass: Bullet,
       mobility: 11,
       accuracy: 11,
       power: 11,
-      bulletsAtOnce: 1,
-      multipleBulletSpread: 0,
-      isAutomatic: false,
+      fireRate: 0,
       canModStock: false,
       canModMag: false,
     }),
 
     new Body({
-      BulletClass: Bullet,
-      mobility: 10,
-      accuracy: 11,
-      power: 12,
-      bulletsAtOnce: 1,
-      multipleBulletSpread: 0,
-      isAutomatic: false,
-      canModStock: false,
-      canModMag: false,
-    }),
-
-    new Body({
+      spriteLength: 49,
       BulletClass: SniperBullet,
       mobility: 2,
       accuracy: 20,
       power: 18,
-      bulletsAtOnce: 1,
-      multipleBulletSpread: 0,
-      isAutomatic: false,
+      fireRate: 0,
     }),
 
     new Body({
-      BulletClass: Bullet,
-      mobility: 4,
-      accuracy: 5,
-      power: 1,
-      bulletsAtOnce: 3,
-      multipleBulletSpread: 0.05,
-      isAutomatic: true,
-      canModStock: false,
-      canModMag: true,
-    }),
-
-    new Body({
+      spriteLength: 39,
       BulletClass: ShotgunShell,
       mobility: 8,
       accuracy: 11,
       power: 16,
+      fireRate: 0,
       bulletsAtOnce: 2,
-      multipleBulletSpread: 0.1,
-      isAutomatic: false,
+      multipleBulletSpread: 0.05,
+      multipleBulletSplit: 10,
       canModStock: true,
       canModMag: false,
     }),
 
     new Body({
+      spriteLength: 36,
       BulletClass: RubberBullet,
       mobility: 6,
       accuracy: 8,
       power: 5,
-      bulletsAtOnce: 1,
-      multipleBulletSpread: 0,
-      isAutomatic: true,
+      fireRate: 0.2,
       canModStock: false,
       canModMag: true,
     }),
 
     new Body({
+      spriteLength: 18,
       BulletClass: BallBullet,
       mobility: 12,
       accuracy: 10,
       power: 12,
-      bulletsAtOnce: 1,
-      multipleBulletSpread: 0,
-      isAutomatic: false,
+      fireRate: 0,
       canModStock: false,
       canModMag: false,
     }),
 
     new Body({
+      spriteLength: 51,
       BulletClass: Bullet,
       mobility: 10,
       accuracy: 10,
       power: 8,
-      bulletsAtOnce: 1,
-      multipleBulletSpread: 0,
-      isAutomatic: true,
+      fireRate: 12,
       canModStock: true,
       canModMag: true,
     }),
@@ -153,8 +150,8 @@ export const gunParts = {
   ],
 
   magazine: [
-    new Magazine({ reloadTime: 1, capacity: 42, fireRate: 0.05, power: -3 }),
-    new Magazine({ reloadTime: 0.5, capacity: 16, fireRate: 0.2, power: 0 }),
-    new Magazine({ reloadTime: 1.5, capacity: 24, fireRate: 0.1, power: -2 }),
+    new Magazine({ reloadTime: 1, capacity: 42, power: -3, mobility: -2 }),
+    new Magazine({ reloadTime: 0.5, capacity: 16, power: 0, mobility: 3 }),
+    new Magazine({ reloadTime: 1.5, capacity: 24, power: -2, mobility: 1 }),
   ],
 };

@@ -21,11 +21,12 @@ let lastTime;
 window.time = {
   deltaTime: 0,
   time: 0,
+  timeSpeed: 1,
 };
 
 function update(currentTime) {
   // Calculate delta time
-  time.deltaTime = (currentTime - lastTime) / 1000;
+  time.deltaTime = ((currentTime - lastTime) / 1000) * time.timeSpeed;
   lastTime = currentTime;
   time.time = currentTime / 1000;
 
