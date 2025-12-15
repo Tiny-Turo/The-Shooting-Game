@@ -7,6 +7,9 @@ gripImage.src = "/sprites/grip.png";
 const stockImage = new Image(); //Temp
 stockImage.src = "/sprites/stock.png";
 
+const magImage = new Image(); //Temp
+magImage.src = "/sprites/mag.png";
+
 const bodyImage = new Image(); //Temp
 bodyImage.src = "/sprites/body-side.png";
 
@@ -29,13 +32,17 @@ export class Gun {
   }
 
   calculateStats() {
-    this.mobility = clamp(this.grip.mobility + this.stock.mobility + this.body.mobility, 0, MAX_STAT_VALUE);
-    this.accuracy = clamp(this.grip.accuracy + this.stock.accuracy, 0, MAX_STAT_VALUE);
-    this.power = clamp(this.stock.power + this.magazine.power + this.body.power, 0, MAX_STAT_VALUE);
+    this.mobility = clamp(this.body.mobility + this.grip.mobility + this.stock.mobility, 1, MAX_STAT_VALUE);
+    this.accuracy = clamp(this.body.accuracy + this.grip.accuracy + this.stock.accuracy, 1, MAX_STAT_VALUE);
+    this.power = clamp(this.body.power + this.stock.power + this.magazine.power, 1, MAX_STAT_VALUE);
+
+    // this.mobility = clamp(this.body.mobility, 1, MAX_STAT_VALUE);
+    // this.accuracy = clamp(this.body.accuracy, 1, MAX_STAT_VALUE);
+    // this.power = clamp(this.body.power, 1, MAX_STAT_VALUE);
 
     this.fireRate = this.magazine.fireRate * this.body.isAutomatic;
-
     this.reloadTime = this.magazine.reloadTime;
+
     this.magCapacity = this.magazine.capacity;
     this.bulletsAtOnce = this.body.bulletsAtOnce;
     this.multipleBulletSpread = this.body.multipleBulletSpread;
@@ -57,7 +64,7 @@ export class Gun {
       let bulletAngle = angle - (this.bulletsAtOnce * this.multipleBulletSpread) / 2 + (i + 0.5) * this.multipleBulletSpread;
 
       // 0.1 is the max and min accuracy angle
-      const accuracyMaxAngle = 0.15;
+      const accuracyMaxAngle = 0.1;
       bulletAngle += (Math.random() - 0.5) * accuracyMaxAngle * (1 - this.accuracy / MAX_STAT_VALUE);
       //Calculate the direction
       const bulletDirection = angleToVector(bulletAngle);
@@ -111,6 +118,8 @@ export class Gun {
     this.drawPart(gripImage, this.grip.imageIndex);
 
     if (this.body.canModStock) this.drawPart(stockImage, this.stock.imageIndex);
+    if (this.body.canModMag) this.drawPart(magImage, this.magazine.imageIndex);
+
     // console.log(this.stock.imageIndex);
 
     ctx.restore();

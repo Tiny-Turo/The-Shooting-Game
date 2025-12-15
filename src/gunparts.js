@@ -1,11 +1,11 @@
 import { BallBullet, Bullet, RubberBullet, ShotgunShell, SniperBullet } from "./bullettypes";
-window.MAX_STAT_VALUE = 12;
+window.MAX_STAT_VALUE = 24;
 class Body {
   static nextImageIndex = 0;
 
-  constructor({ BulletClass, mobility, power, bulletsAtOnce, multipleBulletSpread, isAutomatic = true, canModStock = true, canModMag = true }) {
+  constructor({ BulletClass, mobility, accuracy, power, bulletsAtOnce, multipleBulletSpread, isAutomatic = true, canModStock = true, canModMag = true }) {
     //Each body has base mobility and power
-    Object.assign(this, { BulletClass, mobility, power, bulletsAtOnce, multipleBulletSpread, isAutomatic, canModStock, canModMag });
+    Object.assign(this, { BulletClass, mobility, accuracy, power, bulletsAtOnce, multipleBulletSpread, isAutomatic, canModStock, canModMag });
 
     this.imageIndex = Body.nextImageIndex++;
   }
@@ -45,8 +45,9 @@ export const gunParts = {
   body: [
     new Body({
       BulletClass: Bullet,
-      mobility: 7,
-      power: 7,
+      mobility: 11,
+      accuracy: 11,
+      power: 11,
       bulletsAtOnce: 1,
       multipleBulletSpread: 0,
       isAutomatic: false,
@@ -56,8 +57,9 @@ export const gunParts = {
 
     new Body({
       BulletClass: Bullet,
-      mobility: 7,
-      power: 7,
+      mobility: 10,
+      accuracy: 11,
+      power: 12,
       bulletsAtOnce: 1,
       multipleBulletSpread: 0,
       isAutomatic: false,
@@ -67,8 +69,9 @@ export const gunParts = {
 
     new Body({
       BulletClass: SniperBullet,
-      mobility: 0,
-      power: 10,
+      mobility: 2,
+      accuracy: 20,
+      power: 18,
       bulletsAtOnce: 1,
       multipleBulletSpread: 0,
       isAutomatic: false,
@@ -76,8 +79,9 @@ export const gunParts = {
 
     new Body({
       BulletClass: Bullet,
-      mobility: 1,
-      power: 2,
+      mobility: 4,
+      accuracy: 5,
+      power: 1,
       bulletsAtOnce: 3,
       multipleBulletSpread: 0.05,
       isAutomatic: true,
@@ -87,8 +91,9 @@ export const gunParts = {
 
     new Body({
       BulletClass: ShotgunShell,
-      mobility: 4,
-      power: 8,
+      mobility: 8,
+      accuracy: 11,
+      power: 16,
       bulletsAtOnce: 2,
       multipleBulletSpread: 0.1,
       isAutomatic: false,
@@ -98,7 +103,8 @@ export const gunParts = {
 
     new Body({
       BulletClass: RubberBullet,
-      mobility: 2,
+      mobility: 6,
+      accuracy: 8,
       power: 5,
       bulletsAtOnce: 1,
       multipleBulletSpread: 0,
@@ -109,13 +115,26 @@ export const gunParts = {
 
     new Body({
       BulletClass: BallBullet,
-      mobility: 8,
-      power: 6,
+      mobility: 12,
+      accuracy: 10,
+      power: 12,
       bulletsAtOnce: 1,
       multipleBulletSpread: 0,
       isAutomatic: false,
       canModStock: false,
       canModMag: false,
+    }),
+
+    new Body({
+      BulletClass: Bullet,
+      mobility: 10,
+      accuracy: 10,
+      power: 8,
+      bulletsAtOnce: 1,
+      multipleBulletSpread: 0,
+      isAutomatic: true,
+      canModStock: true,
+      canModMag: true,
     }),
   ],
 
@@ -128,14 +147,14 @@ export const gunParts = {
   ],
 
   stock: [
-    new Stock({ mobility: -2, accuracy: 3, power: 5 }),
-    new Stock({ mobility: 2, accuracy: 5, power: -2 }),
-    new Stock({ mobility: 2, accuracy: 4, power: 1 }),
+    new Stock({ mobility: -1, accuracy: 1, power: 2 }),
+    new Stock({ mobility: 0, accuracy: 2, power: 0 }),
+    new Stock({ mobility: 1, accuracy: 0, power: 1 }),
   ],
 
   magazine: [
-    new Magazine({ reloadTime: 0.5, capacity: 24, fireRate: 0.1, power: -2 }),
-    new Magazine({ reloadTime: 2, capacity: 16, fireRate: 0.2, power: 0 }),
     new Magazine({ reloadTime: 1, capacity: 42, fireRate: 0.05, power: -3 }),
+    new Magazine({ reloadTime: 0.5, capacity: 16, fireRate: 0.2, power: 0 }),
+    new Magazine({ reloadTime: 1.5, capacity: 24, fireRate: 0.1, power: -2 }),
   ],
 };
