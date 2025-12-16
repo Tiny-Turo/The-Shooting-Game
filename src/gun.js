@@ -15,8 +15,8 @@ bodyImage.src = "/sprites/body-side.png";
 
 export class Gun {
   constructor(body, grip, stock, magazine) {
-    // if (!body.canModStock) stock = {};
-    // if (!body.canModMag) magazine = {};
+    if (!body.canModStock) stock = undefined;
+    if (!body.canModMag) magazine = undefined;
     Object.assign(this, { body, grip, stock, magazine });
 
     this.calculateStats();
@@ -32,18 +32,19 @@ export class Gun {
   }
 
   calculateStats() {
-    this.mobility = clamp(this.body.mobility + this.grip.mobility + this.stock.mobility + this.magazine.mobility, 1, MAX_STAT_VALUE);
-    this.accuracy = clamp(this.body.accuracy + this.grip.accuracy + this.stock.accuracy, 1, MAX_STAT_VALUE);
-    this.power = clamp(this.body.power + this.stock.power + this.magazine.power, 1, MAX_STAT_VALUE);
+    // console.log((this.body?.mobility ?? 0) + );
+    this.mobility = clamp(this.body.mobility + this.grip.mobility + (this.stock?.mobility ?? 0) + (this.magazine?.mobility ?? 0), 1, MAX_STAT_VALUE);
+    this.accuracy = clamp(this.body.accuracy + this.grip.accuracy + (this.stock?.accuracy ?? 0), 1, MAX_STAT_VALUE);
+    this.power = clamp(this.body.power + (this.stock?.power ?? 0) + (this.magazine?.power ?? 0), 1, MAX_STAT_VALUE);
     this.fireRate = clamp(this.body.fireRate, 0, MAX_STAT_VALUE);
 
     // this.mobility = clamp(this.body.mobility, 1, MAX_STAT_VALUE);
     // this.accuracy = clamp(this.body.accuracy, 1, MAX_STAT_VALUE);
     // this.power = clamp(this.body.power, 1, MAX_STAT_VALUE);
 
-    this.reloadTime = this.magazine.reloadTime;
+    this.reloadTime = this.magazine?.reloadTime ?? this.body.reloadTime;
 
-    this.magCapacity = this.magazine.capacity;
+    this.magCapacity = this.magazine?.capacity ?? this.body.magCapacity;
     this.bulletsAtOnce = this.body.bulletsAtOnce;
     this.multipleBulletSpread = this.body.multipleBulletSpread;
     this.multipleBulletSplit = this.body.multipleBulletSplit;

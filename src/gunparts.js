@@ -4,7 +4,7 @@ class Body {
   static nextImageIndex = 0;
 
   constructor({
-    spriteLength = 200, // On figma sprite
+    spriteLength, // On figma sprite
     BulletClass,
     mobility,
     accuracy,
@@ -15,20 +15,28 @@ class Body {
     multipleBulletSplit = 0,
     canModStock = true,
     canModMag = true,
+    reloadTime = undefined,
+    magCapacity = undefined,
   }) {
     //Each body has base mobility and power
     Object.assign(this, {
       spriteLength,
       BulletClass,
+
       mobility,
       accuracy,
       power,
       fireRate,
+
       bulletsAtOnce,
       multipleBulletSpread,
       multipleBulletSplit,
+
       canModStock,
       canModMag,
+
+      reloadTime,
+      magCapacity,
     });
 
     this.imageIndex = Body.nextImageIndex++;
@@ -73,9 +81,11 @@ export const gunParts = {
       mobility: 11,
       accuracy: 11,
       power: 11,
-      fireRate: 0,
+      fireRate: 3, // OR 0
       canModStock: false,
       canModMag: false,
+      reloadTime: 0.5,
+      magCapacity: 6,
     }),
 
     new Body({
@@ -97,8 +107,9 @@ export const gunParts = {
       bulletsAtOnce: 2,
       multipleBulletSpread: 0.05,
       multipleBulletSplit: 10,
-      canModStock: true,
       canModMag: false,
+      reloadTime: 1,
+      magCapacity: 1,
     }),
 
     new Body({
@@ -107,9 +118,8 @@ export const gunParts = {
       mobility: 6,
       accuracy: 8,
       power: 5,
-      fireRate: 0.2,
+      fireRate: 5,
       canModStock: false,
-      canModMag: true,
     }),
 
     new Body({
@@ -121,6 +131,8 @@ export const gunParts = {
       fireRate: 0,
       canModStock: false,
       canModMag: false,
+      reloadTime: 1.5,
+      magCapacity: 8,
     }),
 
     new Body({
@@ -130,8 +142,6 @@ export const gunParts = {
       accuracy: 10,
       power: 8,
       fireRate: 12,
-      canModStock: true,
-      canModMag: true,
     }),
   ],
 
