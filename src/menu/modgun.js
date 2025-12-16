@@ -11,13 +11,17 @@ let gunPartsIndex = {
 
 let PADDING = 15;
 
-let changingPart = "body";
-function selectPart(part) {
-  changingPart = part;
+function randomizeGun() {
+  gunPartsIndex.body = Math.floor(Math.random() * gunParts.body.length);
+  gunPartsIndex.grip = Math.floor(Math.random() * gunParts.grip.length);
+  gunPartsIndex.magazine = Math.floor(Math.random() * gunParts.magazine.length);
+  gunPartsIndex.stock = Math.floor(Math.random() * gunParts.stock.length);
+
+  setGun(gunParts.body[gunPartsIndex.body], gunParts.grip[gunPartsIndex.grip], gunParts.stock[gunPartsIndex.stock], gunParts.magazine[gunPartsIndex.magazine]);
 }
 
-function changePart(part, add = 1) {
-  gunPartsIndex[part] += add;
+function changePart(part) {
+  gunPartsIndex[part]++;
 
   gunPartsIndex[part] = (gunPartsIndex[part] + gunParts[part].length) % gunParts[part].length;
 
@@ -25,27 +29,14 @@ function changePart(part, add = 1) {
 }
 
 export function loadButtons() {
-  new Button({
-    x: PADDING,
-    y: PADDING,
-    trigger: () => changePart(changingPart, -1),
-    width: 200,
-    height: 100,
-  });
-
-  new Button({
-    x: 200 + PADDING * 2,
-    y: PADDING,
-    trigger: () => changePart(changingPart),
-    width: 200,
-    height: 100,
-  });
+  // Randomize
+  new Button({ x: canvas.width / 2 + 100, y: canvas.height / 2 + 150, trigger: randomizeGun, width: 100, height: 100 });
 
   // Body
   new Button({
     x: canvas.width / 2 - 250,
     y: canvas.height / 2 - 100,
-    trigger: () => selectPart("body"),
+    trigger: () => changePart("body"),
     width: 650,
     height: 100,
     isVisible: false,
@@ -55,7 +46,7 @@ export function loadButtons() {
   new Button({
     x: canvas.width / 2 - 200,
     y: canvas.height / 2,
-    trigger: () => selectPart("grip"),
+    trigger: () => changePart("grip"),
     width: 100,
     height: 100,
     isVisible: false,
@@ -65,7 +56,7 @@ export function loadButtons() {
   new Button({
     x: canvas.width / 2 - 400,
     y: canvas.height / 2 - 100,
-    trigger: () => selectPart("stock"),
+    trigger: () => changePart("stock"),
     width: 150,
     height: 200,
     disableTrigger: () => !gun.body.canModStock,
@@ -76,15 +67,15 @@ export function loadButtons() {
   new Button({
     x: canvas.width / 2 - 50,
     y: canvas.height / 2,
-    trigger: () => selectPart("magazine"),
+    trigger: () => changePart("magazine"),
     width: 100,
     height: 100,
     disableTrigger: () => !gun.body.canModMag,
     isVisible: false,
   });
-}
 
-changePart("body");
+  randomizeGun();
+}
 
 let statY = 0;
 export function drawStats() {

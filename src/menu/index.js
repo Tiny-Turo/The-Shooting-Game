@@ -14,7 +14,7 @@ export function update() {
 }
 
 export function load() {
-  new Button({ x: canvas.width / 2 - 200, y: canvas.height / 2 + 150, trigger: play });
+  new Button({ x: canvas.width / 2 - 200 - 100 - 15, y: canvas.height / 2 + 150, trigger: play });
   loadButtons();
 }
 
