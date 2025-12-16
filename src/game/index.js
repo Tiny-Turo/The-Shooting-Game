@@ -11,6 +11,7 @@ export function update() {
 }
 
 export function load() {
+  canvas.style.cursor = "default";
   loadPlayer();
   userPlayer.giveGun(gun);
 }

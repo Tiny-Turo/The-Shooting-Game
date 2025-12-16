@@ -11,6 +11,11 @@ let gunPartsIndex = {
 
 let PADDING = 15;
 
+let changingPart = "body";
+function selectPart(part) {
+  changingPart = part;
+}
+
 function changePart(part, add = 1) {
   gunPartsIndex[part] += add;
 
@@ -20,55 +25,63 @@ function changePart(part, add = 1) {
 }
 
 export function loadButtons() {
-  new Button(PADDING, PADDING, () => changePart("body", -1), 200, 100);
-  new Button(200 + PADDING * 2, PADDING, () => changePart("body"), 200, 100);
+  new Button({
+    x: PADDING,
+    y: PADDING,
+    trigger: () => changePart(changingPart, -1),
+    width: 200,
+    height: 100,
+  });
 
-  new Button(PADDING, 100 + PADDING * 2, () => changePart("grip", -1), 200, 100);
-  new Button(200 + PADDING * 2, 100 + PADDING * 2, () => changePart("grip"), 200, 100);
+  new Button({
+    x: 200 + PADDING * 2,
+    y: PADDING,
+    trigger: () => changePart(changingPart),
+    width: 200,
+    height: 100,
+  });
 
-  new Button(
-    PADDING,
-    (100 + PADDING) * 2 + PADDING,
-    () => changePart("stock", -1),
-    200,
-    100,
-    () => {
-      return !gun.body.canModStock;
-    }
-  );
+  // Body
+  new Button({
+    x: canvas.width / 2 - 250,
+    y: canvas.height / 2 - 100,
+    trigger: () => selectPart("body"),
+    width: 650,
+    height: 100,
+    isVisible: false,
+  });
 
-  new Button(
-    200 + PADDING * 2,
-    (100 + PADDING) * 2 + PADDING,
-    () => changePart("stock"),
-    200,
-    100,
-    () => {
-      return !gun.body.canModStock;
-    }
-  );
+  // Grip
+  new Button({
+    x: canvas.width / 2 - 200,
+    y: canvas.height / 2,
+    trigger: () => selectPart("grip"),
+    width: 100,
+    height: 100,
+    isVisible: false,
+  });
 
-  new Button(
-    PADDING,
-    (100 + PADDING) * 3 + PADDING,
-    () => changePart("magazine", -1),
-    200,
-    100,
-    () => {
-      return !gun.body.canModMag;
-    }
-  );
+  // Stock
+  new Button({
+    x: canvas.width / 2 - 400,
+    y: canvas.height / 2 - 100,
+    trigger: () => selectPart("stock"),
+    width: 150,
+    height: 200,
+    disableTrigger: () => !gun.body.canModStock,
+    isVisible: false,
+  });
 
-  new Button(
-    200 + PADDING * 2,
-    (100 + PADDING) * 3 + PADDING,
-    () => changePart("magazine"),
-    200,
-    100,
-    () => {
-      return !gun.body.canModMag;
-    }
-  );
+  // Magazine
+  new Button({
+    x: canvas.width / 2 - 50,
+    y: canvas.height / 2,
+    trigger: () => selectPart("magazine"),
+    width: 100,
+    height: 100,
+    disableTrigger: () => !gun.body.canModMag,
+    isVisible: false,
+  });
 }
 
 changePart("body");

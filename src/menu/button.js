@@ -7,10 +7,17 @@ let buttonClick = new Howl({
 });
 
 export function updateButtons() {
+  let isMouseOnButton = false;
   for (const button of buttons) {
     button.update();
     button.draw();
+    if (button.isMouseOn() && !button.disableTrigger?.()) {
+      canvas.style.cursor = "pointer";
+      isMouseOnButton = true;
+    }
   }
+
+  if (!isMouseOnButton) canvas.style.cursor = "default";
 }
 
 export function clearButtons() {
@@ -27,8 +34,8 @@ const DEFAULT_WIDTH = 400;
 const DEFAULT_HEIGHT = 100;
 
 export class Button {
-  constructor(x, y, trigger, width = DEFAULT_WIDTH, height = DEFAULT_HEIGHT, greyOutTrigger = null) {
-    Object.assign(this, { x, y, trigger, width, height, greyOutTrigger });
+  constructor({ x, y, trigger, width = DEFAULT_WIDTH, height = DEFAULT_HEIGHT, disableTrigger = null, isVisible = true }) {
+    Object.assign(this, { x, y, trigger, width, height, disableTrigger, isVisible });
 
     buttons.push(this);
   }
@@ -40,15 +47,16 @@ export class Button {
   }
 
   draw() {
-    ctx.fillStyle = "#E2C044";
+    if (!this.isVisible) return;
 
-    if (this.isMouseOn() || this.greyOutTrigger?.()) ctx.fillStyle = "#B19738";
+    ctx.fillStyle = "#E2C044";
+    if (this.isMouseOn() || this.disableTrigger?.()) ctx.fillStyle = "#B19738";
 
     ctx.fillRect(this.x, this.y, this.width, this.height);
   }
 
   press() {
-    if (!this.greyOutTrigger?.()) {
+    if (!this.disableTrigger?.()) {
       this.trigger();
       buttonClick.play();
     }
