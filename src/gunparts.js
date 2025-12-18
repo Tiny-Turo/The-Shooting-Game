@@ -6,16 +6,23 @@ class Body {
   constructor({
     gunSound,
     spriteLength, // On figma sprite
+
     BulletClass,
+
     mobility,
     accuracy,
     power,
+
     fireRate,
+    isAutomatic = true,
+
     bulletsAtOnce = 1,
     multipleBulletSpread = 0,
     multipleBulletSplit = 0,
+
     canModStock = true,
     canModMag = true,
+
     reloadTime = undefined,
     magCapacity = undefined,
   }) {
@@ -29,7 +36,9 @@ class Body {
       mobility,
       accuracy,
       power,
+
       fireRate,
+      isAutomatic,
 
       bulletsAtOnce,
       multipleBulletSpread,
@@ -86,6 +95,7 @@ export const gunParts = {
       accuracy: 11,
       power: 11,
       fireRate: 3, // OR 0
+      isAutomatic: false,
       canModStock: false,
       canModMag: false,
       reloadTime: 0.5,
@@ -99,7 +109,8 @@ export const gunParts = {
       mobility: 2,
       accuracy: 20,
       power: 18,
-      fireRate: 0,
+      fireRate: 1,
+      isAutomatic: false,
     }),
 
     new Body({
@@ -109,7 +120,8 @@ export const gunParts = {
       mobility: 8,
       accuracy: 11,
       power: 16,
-      fireRate: 0,
+      fireRate: 1,
+      isAutomatic: false,
       bulletsAtOnce: 2,
       multipleBulletSpread: 0.05,
       multipleBulletSplit: 10,
@@ -136,7 +148,8 @@ export const gunParts = {
       mobility: 12,
       accuracy: 10,
       power: 12,
-      fireRate: 0,
+      fireRate: 2,
+      isAutomatic: false,
       canModStock: false,
       canModMag: false,
       reloadTime: 1.5,

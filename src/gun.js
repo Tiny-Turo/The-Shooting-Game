@@ -25,7 +25,7 @@ export class Gun {
     this.lastShot = 0;
 
     this.shootNoise = new Howl({
-      src: [`/temp/sfx/${body.gunSound}.mp3`],
+      src: [`/temp/sfx/${body.gunSound}.wav`],
       loop: false,
       volume: 1,
     });
@@ -36,7 +36,9 @@ export class Gun {
     this.mobility = clamp(this.body.mobility + this.grip.mobility + (this.stock?.mobility ?? 0) + (this.magazine?.mobility ?? 0), 1, MAX_STAT_VALUE);
     this.accuracy = clamp(this.body.accuracy + this.grip.accuracy + (this.stock?.accuracy ?? 0), 1, MAX_STAT_VALUE);
     this.power = clamp(this.body.power + (this.stock?.power ?? 0) + (this.magazine?.power ?? 0), 1, MAX_STAT_VALUE);
-    this.fireRate = clamp(this.body.fireRate, 0, MAX_STAT_VALUE);
+    this.fireRate = clamp(this.body.fireRate, 1, MAX_STAT_VALUE);
+
+    this.isAutomatic = this.body.isAutomatic;
 
     // this.mobility = clamp(this.body.mobility, 1, MAX_STAT_VALUE);
     // this.accuracy = clamp(this.body.accuracy, 1, MAX_STAT_VALUE);
@@ -56,7 +58,7 @@ export class Gun {
 
   shoot(x, y, angle) {
     //If has no bullets left, is reloading, or fire rate has not passed yet - return
-    if (this.bulletsLeft <= 0 || this.isReloading || (this.fireRate > 0 && time.time - this.lastShot < 60 / (this.fireRate * 50))) return;
+    if (this.bulletsLeft <= 0 || this.isReloading || time.time - this.lastShot < 60 / (this.fireRate * 50)) return;
     this.shootNoise.play();
     //Set lastShot
     this.lastShot = time.time;
