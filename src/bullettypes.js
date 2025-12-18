@@ -45,7 +45,6 @@ export class ShotgunShell extends Bullet {
 
   update(walls) {
     super.update(walls);
-    super.draw();
   }
 }
 
@@ -58,7 +57,6 @@ export class BallBullet extends Bullet {
 
   update(walls) {
     super.update(walls);
-    super.draw();
   }
 }
 
@@ -71,7 +69,6 @@ export class SniperBullet extends Bullet {
 
   update(walls) {
     super.update(walls);
-    super.draw();
   }
 }
 
@@ -117,6 +114,27 @@ export class RubberBullet extends Bullet {
     if (this.bounces <= 0) this.destroy = true;
     super.update(walls, false); // moves bullet
     this.colliding(walls); // bounce check
-    super.draw();
+  }
+}
+
+export class Grenade extends RubberBullet {
+  constructor(x, y, dirX, dirY, power) {
+    super(x, y, dirX, dirY, power);
+    this.dirX = dirX * this.speed; // Use as velocity
+    this.dirY = dirY * this.speed;
+
+    this.imageIndex = 5;
+  }
+
+  update(walls) {
+    super.colliding(walls);
+    this.angle += Math.PI * time.deltaTime;
+
+    this.x += this.dirX * time.deltaTime;
+    this.y += this.dirY * time.deltaTime;
+
+    const blend = Math.pow(0.5, 2 * time.deltaTime);
+    this.dirX *= blend;
+    this.dirY *= blend;
   }
 }

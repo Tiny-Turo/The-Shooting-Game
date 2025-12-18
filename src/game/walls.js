@@ -3,7 +3,8 @@ export const walls = [
   { x: 0, y: 0, width: 1440, height: 100 },
   { x: 1440 - 100, y: 0, width: 100, height: 1440 },
   { x: 0, y: 1440 - 100, width: 1440, height: 100 },
-  { x: 720 - 200, y: 720 - 200, width: 400, height: 400 },
+  { x: 720 + 200, y: 720 - 200, width: 100, height: 400 },
+  { x: 720 - 300, y: 720 - 200, width: 100, height: 400 },
 ];
 
 export function drawWalls() {
@@ -12,17 +13,6 @@ export function drawWalls() {
     ctx.fillRect(wall.x, wall.y, wall.width, wall.height);
   }
 }
-
-// export function intersects(circle, rectangle) {
-//   const closestX = Math.max(rectangle.x, Math.min(circle.x, rectangle.x + rectangle.width));
-
-//   const closestY = Math.max(rectangle.y, Math.min(circle.y, rectangle.y + rectangle.height));
-
-//   const dx = circle.x - closestX;
-//   const dy = circle.y - closestY;
-
-//   return dx * dx + dy * dy <= circle.radius * circle.radius;
-// }
 
 export function resolveCircleRect(circle, rect) {
   // closest point on rect to circle

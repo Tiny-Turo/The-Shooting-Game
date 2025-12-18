@@ -25,7 +25,7 @@ export class Gun {
     this.lastShot = 0;
 
     this.shootNoise = new Howl({
-      src: ["/temp/laser-45816.mp3"],
+      src: [`/temp/sfx/${body.gunSound}.mp3`],
       loop: false,
       volume: 1,
     });

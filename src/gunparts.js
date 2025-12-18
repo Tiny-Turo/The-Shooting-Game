@@ -1,9 +1,10 @@
-import { BallBullet, Bullet, RubberBullet, ShotgunShell, SniperBullet } from "./bullettypes";
+import { BallBullet, Bullet, Grenade, RubberBullet, ShotgunShell, SniperBullet } from "./bullettypes";
 window.MAX_STAT_VALUE = 24;
 class Body {
   static nextImageIndex = 0;
 
   constructor({
+    gunSound,
     spriteLength, // On figma sprite
     BulletClass,
     mobility,
@@ -20,7 +21,9 @@ class Body {
   }) {
     //Each body has base mobility and power
     Object.assign(this, {
+      gunSound,
       spriteLength,
+
       BulletClass,
 
       mobility,
@@ -76,6 +79,7 @@ class Magazine {
 export const gunParts = {
   body: [
     new Body({
+      gunSound: "pistol",
       spriteLength: 23,
       BulletClass: Bullet,
       mobility: 11,
@@ -89,6 +93,7 @@ export const gunParts = {
     }),
 
     new Body({
+      gunSound: "sniper",
       spriteLength: 49,
       BulletClass: SniperBullet,
       mobility: 2,
@@ -98,6 +103,7 @@ export const gunParts = {
     }),
 
     new Body({
+      gunSound: "shotgun",
       spriteLength: 39,
       BulletClass: ShotgunShell,
       mobility: 8,
@@ -113,8 +119,9 @@ export const gunParts = {
     }),
 
     new Body({
+      gunSound: "launcher",
       spriteLength: 36,
-      BulletClass: RubberBullet,
+      BulletClass: Grenade,
       mobility: 6,
       accuracy: 8,
       power: 5,
@@ -123,6 +130,7 @@ export const gunParts = {
     }),
 
     new Body({
+      gunSound: "revolver",
       spriteLength: 18,
       BulletClass: BallBullet,
       mobility: 12,
@@ -136,12 +144,13 @@ export const gunParts = {
     }),
 
     new Body({
+      gunSound: "AR",
       spriteLength: 51,
       BulletClass: Bullet,
       mobility: 10,
       accuracy: 10,
       power: 8,
-      fireRate: 12,
+      fireRate: 10,
     }),
   ],
 
