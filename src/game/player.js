@@ -1,3 +1,5 @@
+import { resolveCircleRect } from "./walls";
+
 const playerConfig = {
   maxSpeed: 2500, // Acceleration
   minSpeed: 900,
@@ -82,6 +84,16 @@ class Player {
     this.angle = angleTo(this, mouse);
 
     this.draw();
+  }
+
+  checkCollisions(walls) {
+    for (const wall of walls) {
+      const pos = resolveCircleRect({ x: this.x, y: this.y, radius: playerConfig.radius }, wall);
+      if (pos) {
+        this.x = pos.newX;
+        this.y = pos.newY;
+      }
+    }
   }
 
   destroy() {

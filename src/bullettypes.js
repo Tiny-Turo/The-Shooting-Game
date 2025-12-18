@@ -11,7 +11,7 @@ export class Bullet {
     this.angle = angleTo({ x: 0, y: 0 }, { x: dirX, y: dirY });
 
     this.destroy = destroy;
-    this.spawn();
+    this.load();
   }
 
   draw() {
@@ -24,9 +24,13 @@ export class Bullet {
     ctx.restore();
   }
 
-  spawn() {}
+  load() {}
 
-  update() {
+  update(walls, destroyOnCollision = true) {
+    for (const wall of walls) {
+      if (this.x > wall.x && this.y > wall.y && this.x < wall.x + wall.width && this.y < wall.y + wall.height && destroyOnCollision) this.destroy = true;
+    }
+
     this.x += this.dirX * this.speed * time.deltaTime;
     this.y += this.dirY * this.speed * time.deltaTime;
   }
@@ -39,8 +43,8 @@ export class ShotgunShell extends Bullet {
     this.imageIndex = 1;
   }
 
-  update() {
-    super.update();
+  update(walls) {
+    super.update(walls);
     super.draw();
   }
 }
@@ -52,8 +56,8 @@ export class BallBullet extends Bullet {
     this.imageIndex = 2;
   }
 
-  update() {
-    super.update();
+  update(walls) {
+    super.update(walls);
     super.draw();
   }
 }
@@ -65,8 +69,8 @@ export class SniperBullet extends Bullet {
     this.imageIndex = 3;
   }
 
-  update() {
-    super.update();
+  update(walls) {
+    super.update(walls);
     super.draw();
   }
 }
@@ -74,12 +78,45 @@ export class SniperBullet extends Bullet {
 export class RubberBullet extends Bullet {
   constructor(x, y, dirX, dirY, power) {
     super(x, y, dirX, dirY, power);
-
     this.imageIndex = 4;
+    this.isColliding = false;
+
+    this.bounces = 6;
   }
 
-  update() {
-    super.update();
+  bouncePointRect(bullet, rect) {
+    const left = Math.abs(bullet.x - rect.x);
+    const right = Math.abs(bullet.x - (rect.x + rect.width));
+    const top = Math.abs(bullet.y - rect.y);
+    const bottom = Math.abs(bullet.y - (rect.y + rect.height));
+
+    const min = Math.min(left, right, top, bottom);
+
+    if (min === left || min === right) {
+      bullet.dirX *= -1; // hit vertical side
+    } else {
+      bullet.dirY *= -1; // hit horizontal side
+    }
+  }
+
+  colliding(walls) {
+    for (const w of walls) {
+      if (this.x >= w.x && this.x <= w.x + w.width && this.y >= w.y && this.y <= w.y + w.height) {
+        if (!this.isColliding) {
+          this.bouncePointRect(this, w);
+          this.bounces--;
+          this.isColliding = true;
+        }
+        return;
+      }
+    }
+    this.isColliding = false;
+  }
+
+  update(walls) {
+    if (this.bounces <= 0) this.destroy = true;
+    super.update(walls, false); // moves bullet
+    this.colliding(walls); // bounce check
     super.draw();
   }
 }
