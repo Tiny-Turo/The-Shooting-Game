@@ -2,7 +2,7 @@ import { resolveCircleRect } from "./walls";
 
 const playerConfig = {
   maxSpeed: 2500, // Acceleration
-  minSpeed: 900,
+  minSpeed: 700,
 
   maxRecoil: 2000,
   friction: 10,

@@ -106,7 +106,7 @@ export const gunParts = {
       gunSound: "sniper",
       spriteLength: 49,
       BulletClass: SniperBullet,
-      mobility: 2,
+      mobility: 1,
       accuracy: 20,
       power: 18,
       fireRate: 1,
