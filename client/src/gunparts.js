@@ -1,4 +1,3 @@
-import { BallBullet, Bullet, Grenade, RubberBullet, ShotgunShell, SniperBullet } from "./bullettypes";
 window.MAX_STAT_VALUE = 24;
 class Body {
   static nextImageIndex = 0;
@@ -7,14 +6,13 @@ class Body {
     gunSound,
     spriteLength, // On figma sprite
 
-    BulletClass,
+    BulletClassName,
 
     mobility,
     accuracy,
     power,
 
     fireRate,
-    isAutomatic = true,
 
     bulletsAtOnce = 1,
     multipleBulletSpread = 0,
@@ -31,14 +29,13 @@ class Body {
       gunSound,
       spriteLength,
 
-      BulletClass,
+      BulletClassName,
 
       mobility,
       accuracy,
       power,
 
       fireRate,
-      isAutomatic,
 
       bulletsAtOnce,
       multipleBulletSpread,
@@ -90,12 +87,11 @@ export const gunParts = {
     new Body({
       gunSound: "pistol",
       spriteLength: 23,
-      BulletClass: Bullet,
+      BulletClassName: "Bullet",
       mobility: 11,
       accuracy: 11,
       power: 11,
       fireRate: 3, // OR 0
-      isAutomatic: false,
       canModStock: false,
       canModMag: false,
       reloadTime: 0.5,
@@ -105,23 +101,21 @@ export const gunParts = {
     new Body({
       gunSound: "sniper",
       spriteLength: 49,
-      BulletClass: SniperBullet,
+      BulletClassName: "SniperBullet",
       mobility: 1,
       accuracy: 20,
       power: 18,
       fireRate: 1,
-      isAutomatic: false,
     }),
 
     new Body({
       gunSound: "shotgun",
       spriteLength: 39,
-      BulletClass: ShotgunShell,
+      BulletClassName: "ShotgunShell",
       mobility: 8,
       accuracy: 11,
       power: 16,
       fireRate: 1,
-      isAutomatic: false,
       bulletsAtOnce: 2,
       multipleBulletSpread: 0.05,
       multipleBulletSplit: 10,
@@ -133,7 +127,7 @@ export const gunParts = {
     new Body({
       gunSound: "launcher",
       spriteLength: 36,
-      BulletClass: Grenade,
+      BulletClassName: "Grenade",
       mobility: 6,
       accuracy: 8,
       power: 5,
@@ -144,12 +138,11 @@ export const gunParts = {
     new Body({
       gunSound: "revolver",
       spriteLength: 18,
-      BulletClass: BallBullet,
+      BulletClassName: "BallBullet",
       mobility: 12,
       accuracy: 10,
       power: 12,
       fireRate: 2,
-      isAutomatic: false,
       canModStock: false,
       canModMag: false,
       reloadTime: 1.5,
@@ -159,7 +152,7 @@ export const gunParts = {
     new Body({
       gunSound: "AR",
       spriteLength: 51,
-      BulletClass: Bullet,
+      BulletClassName: "Bullet",
       mobility: 10,
       accuracy: 10,
       power: 8,

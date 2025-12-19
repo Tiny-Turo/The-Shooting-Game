@@ -1,6 +1,7 @@
 import { Button } from "./button";
 import { gunParts } from "../gunparts";
 import { gun, setGun } from "../gun";
+import { BulletClassMap } from "../bullettypes";
 
 let gunPartsIndex = {
   body: 0,
@@ -90,7 +91,7 @@ export function drawStats() {
 
   ctx.fillStyle = "#E2C044";
   ctx.fillRect(canvas.width - 500 - PADDING * 2, PADDING, 100, 100);
-  let bulletImage = new gun.BulletClass(canvas.width - 450 - PADDING * 2, 50 + PADDING, 0, -1, 0, true);
+  let bulletImage = new BulletClassMap[gun.BulletClassName](canvas.width - 450 - PADDING * 2, 50 + PADDING, 0, -1, 0, true);
   bulletImage.draw();
 
   ctx.font = "25px saeada";

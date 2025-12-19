@@ -1,7 +1,7 @@
 let bulletSheet = new Image();
 bulletSheet.src = "/sprites/bullets.png";
 
-export class Bullet {
+class Bullet {
   constructor(x, y, dirX, dirY, power, destroy = false) {
     Object.assign(this, { x, y, dirX, dirY, power });
 
@@ -36,7 +36,7 @@ export class Bullet {
   }
 }
 
-export class ShotgunShell extends Bullet {
+class ShotgunShell extends Bullet {
   constructor(x, y, dirX, dirY, power) {
     super(x, y, dirX, dirY, power);
 
@@ -48,7 +48,7 @@ export class ShotgunShell extends Bullet {
   }
 }
 
-export class BallBullet extends Bullet {
+class BallBullet extends Bullet {
   constructor(x, y, dirX, dirY, power) {
     super(x, y, dirX, dirY, power);
 
@@ -60,7 +60,7 @@ export class BallBullet extends Bullet {
   }
 }
 
-export class SniperBullet extends Bullet {
+class SniperBullet extends Bullet {
   constructor(x, y, dirX, dirY, power) {
     super(x, y, dirX, dirY, power);
 
@@ -72,7 +72,7 @@ export class SniperBullet extends Bullet {
   }
 }
 
-export class RubberBullet extends Bullet {
+class RubberBullet extends Bullet {
   constructor(x, y, dirX, dirY, power) {
     super(x, y, dirX, dirY, power);
     this.imageIndex = 4;
@@ -117,7 +117,7 @@ export class RubberBullet extends Bullet {
   }
 }
 
-export class Grenade extends RubberBullet {
+class Grenade extends RubberBullet {
   constructor(x, y, dirX, dirY, power) {
     super(x, y, dirX, dirY, power);
     this.dirX = dirX * this.speed; // Use as velocity
@@ -138,3 +138,11 @@ export class Grenade extends RubberBullet {
     this.dirY *= blend;
   }
 }
+
+export const BulletClassMap = {
+  Bullet: Bullet,
+  ShotgunShell: ShotgunShell,
+  BallBullet: BallBullet,
+  SniperBullet: SniperBullet,
+  Grenade: Grenade,
+};

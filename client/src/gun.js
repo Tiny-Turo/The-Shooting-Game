@@ -1,3 +1,6 @@
+import { BulletClassMap } from "./bullettypes";
+import { shotToServer } from "./game/connections";
+
 const bodyTopDown = new Image(); //Temp
 bodyTopDown.src = "/sprites/body-top-down.png";
 
@@ -17,6 +20,51 @@ export function drawGun(imageIndex) {
   ctx.drawImage(bodyTopDown, imageIndex * SPRITE_SIZE, 0, SPRITE_SIZE, SPRITE_SIZE * 2, -SPRITE_SIZE / 2, -SPRITE_SIZE * 2.45, SPRITE_SIZE, SPRITE_SIZE * 2);
 }
 
+export function shotFired(
+  { x, y, angle, BulletClassName, gunSound, bulletsAtOnce, multipleBulletSpread, multipleBulletSplit, accuracy, spriteLength, power, random },
+  fromUserPlayer = true
+) {
+  if (fromUserPlayer)
+    shotToServer({
+      x,
+      y,
+      angle,
+      BulletClassName,
+      gunSound,
+      bulletsAtOnce,
+      multipleBulletSpread,
+      multipleBulletSplit,
+      accuracy,
+      spriteLength,
+      power,
+      random,
+    });
+  //If has no bullets left, is reloading, or fire rate has not passed yet - return
+  new Howl({ src: [`/temp/sfx/${gunSound}.wav`] }).play;
+
+  for (let i = 0; i < bulletsAtOnce; i++) {
+    //Calculate bullet angle, taking into consideration spread if there is more than one bullet
+    let bulletAngle = angle - (bulletsAtOnce * multipleBulletSpread) / 2 + (i + 0.5) * multipleBulletSpread;
+
+    // 0.1 is the max and min accuracy angle
+    const accuracyMaxAngle = 0.1;
+    bulletAngle += (random - 0.5) * accuracyMaxAngle * (1 - accuracy / MAX_STAT_VALUE);
+    //Calculate the direction
+    const bulletDirection = angleToVector(bulletAngle);
+
+    let spawnX = x + Math.sin(angle) * ((spriteLength / 64) * 200 + SPRITE_SIZE * 0.45);
+    let spawnY = y - Math.cos(angle) * ((spriteLength / 64) * 200 + SPRITE_SIZE * 0.45);
+
+    const offsetSpawn = -(bulletsAtOnce * multipleBulletSplit) / 2 + (i + 0.5) * multipleBulletSplit;
+
+    spawnX += Math.cos(angle) * offsetSpawn;
+    spawnY += Math.sin(angle) * offsetSpawn;
+
+    const newBullet = new BulletClassMap[BulletClassName](spawnX, spawnY, bulletDirection.x, bulletDirection.y, power);
+    pushBullet(newBullet);
+  }
+}
+
 export class Gun {
   constructor(body, grip, stock, magazine) {
     if (!body.canModStock) stock = undefined;
@@ -27,22 +75,13 @@ export class Gun {
 
     this.isReloading = false;
     this.lastShot = 0;
-
-    this.shootNoise = new Howl({
-      src: [`/temp/sfx/${body.gunSound}.wav`],
-      loop: false,
-      volume: 1,
-    });
   }
 
   calculateStats() {
-    // console.log((this.body?.mobility ?? 0) + );
     this.mobility = clamp(this.body.mobility + this.grip.mobility + (this.stock?.mobility ?? 0) + (this.magazine?.mobility ?? 0), 1, MAX_STAT_VALUE);
     this.accuracy = clamp(this.body.accuracy + this.grip.accuracy + (this.stock?.accuracy ?? 0), 1, MAX_STAT_VALUE);
     this.power = clamp(this.body.power + (this.stock?.power ?? 0) + (this.magazine?.power ?? 0), 1, MAX_STAT_VALUE);
     this.fireRate = clamp(this.body.fireRate, 1, MAX_STAT_VALUE);
-
-    this.isAutomatic = this.body.isAutomatic;
 
     // this.mobility = clamp(this.body.mobility, 1, MAX_STAT_VALUE);
     // this.accuracy = clamp(this.body.accuracy, 1, MAX_STAT_VALUE);
@@ -55,39 +94,28 @@ export class Gun {
     this.multipleBulletSpread = this.body.multipleBulletSpread;
     this.multipleBulletSplit = this.body.multipleBulletSplit;
 
-    this.BulletClass = this.body.BulletClass;
+    this.BulletClassName = this.body.BulletClassName;
 
     this.bulletsLeft = this.magCapacity;
   }
 
   shoot(x, y, angle) {
-    //If has no bullets left, is reloading, or fire rate has not passed yet - return
     if (this.bulletsLeft <= 0 || this.isReloading || time.time - this.lastShot < 60 / (this.fireRate * 50)) return;
-    this.shootNoise.play();
-    //Set lastShot
     this.lastShot = time.time;
-
-    for (let i = 0; i < this.bulletsAtOnce; i++) {
-      //Calculate bullet angle, taking into consideration spread if there is more than one bullet
-      let bulletAngle = angle - (this.bulletsAtOnce * this.multipleBulletSpread) / 2 + (i + 0.5) * this.multipleBulletSpread;
-
-      // 0.1 is the max and min accuracy angle
-      const accuracyMaxAngle = 0.1;
-      bulletAngle += (Math.random() - 0.5) * accuracyMaxAngle * (1 - this.accuracy / MAX_STAT_VALUE);
-      //Calculate the direction
-      const bulletDirection = angleToVector(bulletAngle);
-
-      let spawnX = x + Math.sin(angle) * ((this.body.spriteLength / 64) * 200 + SPRITE_SIZE * 0.45);
-      let spawnY = y - Math.cos(angle) * ((this.body.spriteLength / 64) * 200 + SPRITE_SIZE * 0.45);
-
-      const offsetSpawn = (i - 0.5) * this.multipleBulletSplit - (this.multipleBulletSplit * this.multipleBulletSpread) / 2;
-      spawnX += Math.cos(angle) * offsetSpawn;
-      spawnY += Math.sin(angle) * offsetSpawn;
-
-      const newBullet = new this.BulletClass(spawnX, spawnY, bulletDirection.x, bulletDirection.y, this.power);
-      pushBullet(newBullet);
-    }
-
+    shotFired({
+      x: x,
+      y: y,
+      angle: angle,
+      BulletClassName: this.BulletClassName,
+      shootNoise: this.body.gunSound,
+      bulletsAtOnce: this.bulletsAtOnce,
+      multipleBulletSpread: this.multipleBulletSpread,
+      multipleBulletSplit: this.multipleBulletSplit,
+      accuracy: this.accuracy,
+      spriteLength: this.body.spriteLength,
+      power: this.power,
+      random: Math.random(),
+    });
     this.bulletsLeft -= 1; //Even if it shoots multiple bullets at once, count it as one round
     if (this.bulletsLeft <= 0) {
       this.reload(); // Automatically reload if there are no bullets left
@@ -133,8 +161,6 @@ export class Gun {
 
     if (this.body.canModStock) this.drawPart(stockImage, this.stock.imageIndex);
     if (this.body.canModMag) this.drawPart(magImage, this.magazine.imageIndex);
-
-    // console.log(this.stock.imageIndex);
 
     ctx.restore();
   }
