@@ -13,6 +13,10 @@ magImage.src = "/sprites/mag.png";
 const bodyImage = new Image(); //Temp
 bodyImage.src = "/sprites/body-side.png";
 
+export function drawGun(imageIndex) {
+  ctx.drawImage(bodyTopDown, imageIndex * SPRITE_SIZE, 0, SPRITE_SIZE, SPRITE_SIZE * 2, -SPRITE_SIZE / 2, -SPRITE_SIZE * 2.45, SPRITE_SIZE, SPRITE_SIZE * 2);
+}
+
 export class Gun {
   constructor(body, grip, stock, magazine) {
     if (!body.canModStock) stock = undefined;
@@ -103,9 +107,7 @@ export class Gun {
   }
 
   draw() {
-    //Body
-    const imageIndex = this.body.imageIndex;
-    ctx.drawImage(bodyTopDown, imageIndex * SPRITE_SIZE, 0, SPRITE_SIZE, SPRITE_SIZE * 2, -SPRITE_SIZE / 2, -SPRITE_SIZE * 2.45, SPRITE_SIZE, SPRITE_SIZE * 2);
+    drawGun(this.body.imageIndex);
   }
 
   drawPart(image, index) {

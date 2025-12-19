@@ -1,3 +1,4 @@
+import { drawGun } from "../gun";
 import { resolveCircleRect } from "./walls";
 
 const playerConfig = {
@@ -13,6 +14,29 @@ const playerConfig = {
 };
 
 playerConfig.image.src = "/sprites/player.png";
+
+function generateUID() {
+  var result = "";
+  var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  var charactersLength = characters.length;
+  for (var i = 0; i < 20; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+}
+
+export function drawPlayer(player) {
+  ctx.save();
+  ctx.translate(player.x, player.y);
+  ctx.rotate(player.angle);
+
+  ctx.fillStyle = "#ED6A5A";
+
+  drawGun(player.gunIndex);
+  ctx.drawImage(playerConfig.image, -SPRITE_SIZE / 2, -SPRITE_SIZE / 2, SPRITE_SIZE, SPRITE_SIZE);
+
+  ctx.restore();
+}
 
 class Player {
   constructor(x, y) {
@@ -33,6 +57,8 @@ class Player {
 
     addEventListener("mousedown", this.onMouseDown);
     addEventListener("keydown", this.onKeyDown);
+
+    this.uid = generateUID();
   }
 
   draw() {
