@@ -58,7 +58,7 @@ class Player {
     addEventListener("mousedown", this.onMouseDown);
     addEventListener("keydown", this.onKeyDown);
 
-    this.uid = generateUID();
+    this.UID = generateUID();
   }
 
   draw() {

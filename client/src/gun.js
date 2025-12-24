@@ -40,7 +40,7 @@ export function shotFired(
       random,
     });
   //If has no bullets left, is reloading, or fire rate has not passed yet - return
-  new Howl({ src: [`/temp/sfx/${gunSound}.wav`] }).play;
+  new Howl({ src: [`/temp/sfx/${gunSound}.wav`] }).play();
 
   for (let i = 0; i < bulletsAtOnce; i++) {
     //Calculate bullet angle, taking into consideration spread if there is more than one bullet
@@ -107,7 +107,7 @@ export class Gun {
       y: y,
       angle: angle,
       BulletClassName: this.BulletClassName,
-      shootNoise: this.body.gunSound,
+      gunSound: this.body.gunSound,
       bulletsAtOnce: this.bulletsAtOnce,
       multipleBulletSpread: this.multipleBulletSpread,
       multipleBulletSplit: this.multipleBulletSplit,

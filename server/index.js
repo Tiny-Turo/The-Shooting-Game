@@ -5,12 +5,18 @@ io.on("connection", (socket) => {
   console.log("A user connected");
 
   socket.on("message", (message) => {
+    socket.data.UID = message.UID;
     io.emit("message", message);
   });
 
   socket.on("shotFired", (message) => {
     io.emit("shotFired", message);
     console.log("Pew Pew!");
+  });
+
+  socket.on("disconnect", function () {
+    console.log("Someone has left!");
+    io.emit("message", socket.data.UID);
   });
 });
 

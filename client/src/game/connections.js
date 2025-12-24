@@ -1,4 +1,5 @@
 import { shotFired } from "../gun";
+import { userPlayer } from "./player";
 // import { userPlayer } from "./player";
 
 const socket = io(import.meta.env.VITE_WEBSOCKET_URL || "ws://localhost:8080/");
@@ -7,7 +8,18 @@ const socket = io(import.meta.env.VITE_WEBSOCKET_URL || "ws://localhost:8080/");
 export let players = {};
 
 socket.on("message", (player) => {
-  players[player.uid] = player;
+  //only ID has been send as a "disconnect" message
+  if (typeof player == "string") {
+    delete players[player];
+    console.log(player);
+    return;
+  }
+
+  if (!userPlayer) return;
+
+  if (player.UID === userPlayer.UID) return;
+
+  players[player.UID] = player;
 });
 
 export function updateToServer(userPlayer) {
@@ -16,7 +28,7 @@ export function updateToServer(userPlayer) {
     y: userPlayer.y,
     angle: userPlayer.angle,
 
-    uid: userPlayer.uid,
+    UID: userPlayer.UID,
 
     gunIndex: userPlayer.gun.body.imageIndex,
   };
@@ -25,10 +37,15 @@ export function updateToServer(userPlayer) {
 }
 
 socket.on("shotFired", (shot) => {
+  if (!userPlayer) return;
+
+  if (shot.shooterUID === userPlayer.UID) return;
+
   shotFired(shot, false);
   console.log("hi");
 });
 
 export function shotToServer(shot) {
+  shot.shooterUID = userPlayer.UID;
   socket.emit("shotFired", shot);
 }
