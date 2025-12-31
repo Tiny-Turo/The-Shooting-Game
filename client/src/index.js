@@ -22,6 +22,7 @@ window.time = {
   deltaTime: 0,
   time: 0,
   timeSpeed: 1,
+  maxFPS: 2000,
 };
 
 function update(currentTime) {
@@ -33,7 +34,13 @@ function update(currentTime) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   scenes[currentScene]?.update();
 
-  requestAnimationFrame(update);
+  if (time.deltaTime < 1 / time.maxFPS) {
+    setTimeout(() => {
+      requestAnimationFrame(update);
+    }, (1 / time.maxFPS - time.deltaTime) * 1000);
+  } else {
+    requestAnimationFrame(update);
+  }
 }
 
 requestAnimationFrame(function (currentTime) {
