@@ -11,7 +11,6 @@ socket.on("message", (player) => {
   //only ID has been send as a "disconnect" message
   if (typeof player == "string") {
     delete players[player];
-    console.log(player);
     return;
   }
 
@@ -42,7 +41,6 @@ socket.on("shotFired", (shot) => {
   if (shot.shooterUID === userPlayer.UID) return;
 
   shotFired(shot, false);
-  console.log("hi");
 });
 
 export function shotToServer(shot) {

@@ -10,6 +10,10 @@ window.magnitude = function (a) {
   return Math.sqrt(a.x ** 2 + a.y ** 2);
 };
 
+window.distance = function (a, b) {
+  return Math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2);
+};
+
 window.lerp = function (a, b, t) {
   return a * (1 - t) + b * t;
 };
