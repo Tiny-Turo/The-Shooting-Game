@@ -5,7 +5,6 @@ const playerConfig = {
   maxSpeed: 2500, // Acceleration
   minSpeed: 700,
 
-  maxRecoil: 2000,
   friction: 10,
 
   radius: 50,

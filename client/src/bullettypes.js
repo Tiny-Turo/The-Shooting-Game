@@ -177,14 +177,14 @@ class Grenade extends RubberBullet {
     this.dirY = dirY * this.speed;
 
     this.imageIndex = 5;
+
+    setTimeout(() => {
+      this.destroy = true;
+      new Howl({ src: [`/temp/sfx/grenade-explode.mp3`], volume: 1 }).play();
+    }, 3000);
   }
 
   update(walls) {
-    if (this.bounces <= 0) {
-      this.destroy = true;
-      return;
-    }
-
     this.prevX = this.x;
     this.prevY = this.y;
 
